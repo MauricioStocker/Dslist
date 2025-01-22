@@ -1,6 +1,7 @@
 package com.strockerdevs.dslist.dto;
 
 import com.strockerdevs.dslist.entities.Game;
+import com.strockerdevs.dslist.projections.GameMinProjection;
 
 public class GameMinDTO {
 
@@ -39,6 +40,14 @@ public class GameMinDTO {
 
     public String getShortDescription() {
         return shortDescription;
+    }
+
+    public GameMinDTO(GameMinProjection entityProjection) {
+        id = entityProjection.getId();
+        title = entityProjection.getTitle();
+        year = entityProjection.getYear();
+        imgUrl = entityProjection.getImgUrl();
+        shortDescription = entityProjection.getShortDescription();
     }
     
 
