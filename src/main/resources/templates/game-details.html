@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Jogo</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
     <style>
+        /* Fundo e estilo geral */
         body {
-            font-family: 'Press Start 2P', cursive;
-            background-color: #1e1e1e;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #87cefa, #b3e0ff); /* Degradê de azul claro */
             color: #fff;
             margin: 0;
             padding: 0;
@@ -16,9 +18,10 @@
 
         header {
             text-align: center;
-            background-color: #222;
+            background-color: rgba(34, 34, 34, 0.8); /* Fundo escuro com transparência */
             padding: 20px;
             margin-bottom: 40px;
+            border-radius: 8px;
         }
 
         header h1 {
@@ -28,14 +31,23 @@
             letter-spacing: 2px;
         }
 
-        .game-detail-container {
+        /* Card de detalhes do jogo */
+        .game-detail-card {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 30px;
             margin: 0 20px;
+            background-image: url('https://example.com/super-mario-background.jpg'); /* Imagem de fundo */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
         }
 
+        /* Imagem do jogo */
         .game-image {
             width: 300px;
             height: 450px;
@@ -43,23 +55,44 @@
             border-radius: 10px;
         }
 
+        /* Detalhes do jogo */
         .game-details {
             max-width: 600px;
-            text-align: left;
             color: #bbb;
+            text-align: left;
+            background-color: rgba(28, 28, 28, 0.8); /* Transparência para destacar a imagem */
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
         }
 
         .game-details h2 {
             font-size: 2rem;
             color: #f2b600;
+            margin-bottom: 20px;
         }
 
         .game-details p {
-            font-size: 1.2rem;
+            font-size: 1rem; /* Fonte ajustada para tamanho normal */
             line-height: 1.6;
             margin: 10px 0;
         }
 
+        .game-details strong {
+            font-weight: bold;
+            color: #f2b600; /* Cor destacada para títulos */
+        }
+
+        /* Destaque para as descrições */
+        .game-details .short-description, .game-details .long-description {
+            font-family: 'Verdana', sans-serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #ddd;
+            margin-top: 15px;
+        }
+
+        /* Botão de volta */
         .back-button {
             display: inline-block;
             padding: 10px 20px;
@@ -75,6 +108,7 @@
         .back-button:hover {
             background-color: #444;
         }
+
     </style>
 </head>
 <body>
@@ -83,22 +117,30 @@
     </header>
 
     <main>
-        <div class="game-detail-container">
+        <div class="game-detail-card">
+            <!-- Imagem do jogo -->
             <img th:src="${game.imgUrl}" alt="Imagem do Jogo" class="game-image">
+
+            <!-- Detalhes do jogo -->
             <div class="game-details">
                 <h2 th:text="${game.title}"></h2>
                 <p><strong>Ano:</strong> <span th:text="${game.year}"></span></p>
                 <p><strong>Gênero:</strong> <span th:text="${game.genre}"></span></p>
                 <p><strong>Plataformas:</strong> <span th:text="${game.platforms}"></span></p>
                 <p><strong>Nota:</strong> <span th:text="${game.score}"></span></p>
-                <div>
+
+                <!-- Descrição curta -->
+                <div class="short-description">
                     <strong>Descrição curta:</strong>
                     <p th:text="${game.shortDescription}"></p>
                 </div>
-                <div>
+
+                <!-- Descrição longa -->
+                <div class="long-description">
                     <strong>Descrição longa:</strong>
                     <p th:text="${game.longDescription}"></p>
                 </div>
+
                 <a href="/games" class="back-button">Voltar para a lista de jogos</a>
             </div>
         </div>

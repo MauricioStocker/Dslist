@@ -1,59 +1,73 @@
+/* Aplicando uma fonte simples no body */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif; /* Fonte mais neutra para todo o corpo */
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    background-color: #f5f5f5; /* Fundo claro */
+    background: linear-gradient(to bottom, #87cefa, #b3e0ff); /* Degradê de azul claro */
 }
 
+/* Cabeçalho */
 header {
     text-align: center;
-    background-color: #333;
+    background-color: #333; /* Fundo escuro para o cabeçalho */
     color: white;
     padding: 1rem;
 }
 
+/* Main */
 main {
     padding: 2rem;
 }
 
+/* Lista de Jogos (ajustes de layout simples e responsivo) */
 .game-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
-    justify-content: center;
+    justify-items: center;
+    padding: 20px;
 }
 
+/* Card de Jogo */
 .game-item {
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1rem;
-    max-width: 250px;
+    background-color: #dcdcdc; /* Fundo cinza claro */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    width: 100%;
+    max-width: 320px;
+    color: #fff; /* Cor do texto branco */
 }
 
-.game-item:hover {
-    transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+/* Títulos dos cards */
+.game-item h3 {
+    font-family: 'Arial', sans-serif; /* Fonte simples */
+    font-size: 1.5rem;
+    margin-top: 10px;
+    color: #f2b600; /* Dourado para o título */
 }
 
+/* Descrição no card */
+.game-item p {
+    font-size: 1rem;
+    color: #fff; /* Texto em branco */
+    margin-top: 5px;
+    line-height: 1.6; /* Melhor legibilidade da descrição */
+    text-align: justify;
+}
+
+/* Imagem do jogo */
 .game-image {
     width: 100%;
     height: auto;
     border-radius: 8px;
 }
 
-h3 {
-    margin: 0.5rem 0;
-}
+/* Efeito de hover removido */
 
-p {
-    margin: 0.5rem 0;
-    font-size: 14px;
-    color: #555;
-}
-
+/* Links */
 a {
     display: inline-block;
     margin-top: 10px;
@@ -66,4 +80,23 @@ a {
 
 a:hover {
     background-color: #555;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 1200px) {
+    .game-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajuste para telas médias */
+    }
+}
+
+@media (max-width: 768px) {
+    .game-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Ajuste para telas pequenas */
+    }
+}
+
+@media (max-width: 480px) {
+    .game-list {
+        grid-template-columns: 1fr; /* Uma coluna para telas muito pequenas */
+    }
 }

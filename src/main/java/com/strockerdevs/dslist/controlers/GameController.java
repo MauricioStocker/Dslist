@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.strockerdevs.dslist.dto.GameDTO;
 import com.strockerdevs.dslist.dto.GameMinDTO;
@@ -29,11 +30,19 @@ public String showGamePage(Model model) {
 
     
 
-    // Endpoint para exibir detalhes de um jogo específico
+  // Endpoint para exibir detalhes de um jogo específico
     @GetMapping("/games/{id}")
     public String showGameDetails(@PathVariable Long id, Model model) {
         GameDTO game = gameService.findById(id);
         model.addAttribute("game", game);
         return "game-details"; // Nome do arquivo game-details.html em src/main/resources/templates
+    }
+
+    // Novo endpoint para buscar jogo por ID
+    @GetMapping("/games/search")
+    public String searchGameById(@RequestParam Long gameId, Model model) {
+        GameDTO game = gameService.findById(gameId); // Busca o jogo pelo ID
+        model.addAttribute("game", game);
+        return "game-details"; // Redireciona para a página de detalhes
     }
 }
