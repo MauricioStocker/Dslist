@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Jogo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo geral */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #87cefa, #b3e0ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            min-height: 100vh; /* Certifica-se que a altura mínima será a altura total da tela */
+            overflow-y: auto; /* Permite rolagem vertical */
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            background-color: rgba(34, 34, 34, 0.8);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            left: 0;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #f2b600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        header .back-button {
+            padding: 8px 12px;
+            background-color: #ff5733;
+            color: #fff;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        header .back-button:hover {
+            background-color: #cc4629;
+        }
+
+        #addGameForm {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: rgba(28, 28, 28, 0.8);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            min-height: 400px;
+            overflow-y: auto; /* Permite rolar se o conteúdo for maior que o container */
+            margin-top: 100px; /* Adiciona um espaço abaixo do cabeçalho fixo */
+            padding-bottom: 20px; /* Adiciona espaço na parte inferior */
+        }
+
+        label {
+            font-size: 1rem;
+            color: #f2b600;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        textarea,
+        select {
+            padding: 8px;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            border: none;
+            background-color: #ddd;
+            color: #333;
+            width: 100%;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 8px 12px;
+            background-color: #333;
+            color: #f2b600;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            #addGameForm {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="back-button" onclick="window.location.href='/games';">Voltar para Jogos</button>
+        <h1>Adicionar Novo Jogo</h1>
+    </header>
+
+    <main>
+        <form id="addGameForm" enctype="multipart/form-data">
+            <label for="title">Título:</label>
+            <input type="text" id="title" name="title" required><br>
+
+            <label for="score">Pontuação (0 a 10):</label>
+            <input type="number" id="score" name="score" min="0" max="10" required><br>
+
+            <label for="year">Ano de Lançamento:</label>
+            <input 
+                type="text" 
+                id="year" 
+                name="year" 
+                required 
+                maxlength="4" 
+                pattern="^\d{1,4}$" 
+                title="Digite apenas números com no máximo 4 dígitos"
+                placeholder="Ex.: 2023">
+                <br><br>
+
+            <label for="genre">Gênero:</label>
+            <select id="genre" name="genre" required>
+                <option value="Platform">Platform</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="RPG">RPG</option>
+                <option value="Strategy">Strategy</option>
+            </select><br>
+
+            <!-- Alteração: Plataformas agora como string única -->
+            <label for="platforms">Plataforma:</label>
+            <select id="platforms" name="platforms" required>
+                <option value="XBox">XBox</option>
+                <option value="Playstation">Playstation</option>
+                <option value="Nintendo">Nintendo</option>
+                <option value="PC">PC</option>
+            </select><br>
+
+            <label for="imageFile">Imagem:</label>
+            <input type="file" id="imageFile" name="imageFile" required><br>
+
+            <label for="shortDescription">Descrição Curta:</label>
+            <textarea id="shortDescription" name="shortDescription" required></textarea><br>
+
+            <label for="longDescription">Descrição Longa:</label>
+            <textarea id="longDescription" name="longDescription" required></textarea><br>
+
+            <button type="submit">Adicionar Jogo</button>
+        </form>
+    </main>
+
+    <script>
+        // Função de validação
+        document.getElementById("addGameForm").onsubmit = async function (event) {
+            event.preventDefault();
+
+            // Validação do Ano (formato YYYY)
+            const year = document.getElementById("year").value;
+            const yearRegex = /^\d{4}$/;
+            if (!year.match(yearRegex)) {
+                alert("Por favor, insira um ano válido (exemplo: 2017).");
+                return;
+            }
+
+            // Validação da Nota (entre 0 e 10)
+            const score = document.getElementById("score").value;
+            if (score < 0 || score > 10) {
+                alert("A nota deve ser entre 0 e 10.");
+                return;
+            }
+
+            // Preparar os dados para envio
+            const formData = new FormData(event.target);
+            const gameJson = JSON.stringify({
+                title: formData.get("title"),
+                score: formData.get("score"),
+                year: formData.get("year"),
+                genre: formData.get("genre"), // Gênero como string
+                platforms: formData.get("platforms"), // Plataforma como string
+                shortDescription: formData.get("shortDescription"),
+                longDescription: formData.get("longDescription"),
+            });
+
+            formData.append("game", gameJson);
+
+            const response = await fetch("/add", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                alert("Jogo adicionado com sucesso!");
+                window.location.href = "/games"; // Redireciona para a página de jogos
+            } else {
+                alert("Erro ao adicionar o jogo.");
+            }
+        };
+    </script>
+</body>
+</html>

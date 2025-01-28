@@ -1,6 +1,7 @@
 package com.strockerdevs.dslist.dto;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.strockerdevs.dslist.entities.Game;
 
@@ -15,6 +16,7 @@ public class GameDTO {
     private String imgUrl;
     private String shortDescription;
     private String longDescription;
+    private MultipartFile imageFile;
 
     public GameDTO() {
 
@@ -25,6 +27,7 @@ public class GameDTO {
 
     }
 
+    
     public Long getId() {
         return id;
     }
@@ -120,6 +123,14 @@ public class GameDTO {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public MultipartFile getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
     }
 
 }

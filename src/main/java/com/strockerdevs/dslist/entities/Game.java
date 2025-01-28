@@ -2,12 +2,15 @@ package com.strockerdevs.dslist.entities;
 
 import java.util.Objects;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_game")
@@ -30,12 +33,43 @@ public class Game {
 
 	@Column(columnDefinition = "TEXT")
 	private String longDescription;
+
+	@Transient
+	private MultipartFile imageFile;
 	
     public Game() {
     }
-    
+
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Game other = (Game) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+
 	public Game(Long id, String title, Integer year, String genre, String platforms, Double score, String imgUrl,
-			String shortDescription, String longDescription) {
+			String shortDescription, String longDescription, MultipartFile imageFile) {
 		this.id = id;
 		this.title = title;
 		this.year = year;
@@ -44,8 +78,10 @@ public class Game {
 		this.score = score;
 		this.imgUrl = imgUrl;
 		this.shortDescription = shortDescription;
-		this.longDescription = longDescription;		
+		this.longDescription = longDescription;
+		this.imageFile = imageFile;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -119,20 +155,12 @@ public class Game {
 		this.longDescription = longDescription;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
+	public MultipartFile getImageFile() {
+		return imageFile;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Game other = (Game) obj;
-		return Objects.equals(id, other.id);
+	public void setImageFile(MultipartFile imageFile) {
+		this.imageFile = imageFile;
 	}
+    
 }
