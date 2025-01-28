@@ -18,9 +18,10 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
 
-    @Transactional(readOnly = true)// faz com que a busca ou a não escrica, so leitura seja mais rapida
+    @Transactional(readOnly = true) // faz com que a busca ou a não escrica, so leitura seja mais rapida
     public GameDTO findById(Long id) {
-        Game result = gameRepository.findById(id).get();// demos um get pois o id do game que traz é um objeto, assim ele encontra os dados necessarios
+        Game result = gameRepository.findById(id).get();// demos um get pois o id do game que traz é um objeto, assim
+                                                        // ele encontra os dados necessarios
         GameDTO dto = new GameDTO(result);
         return dto;
     }
@@ -29,17 +30,25 @@ public class GameService {
     public List<GameMinDTO> findAll() {
         List<Game> result = gameRepository.findAll();
         List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList(); // o stream é responsavel por
-                                                                   // transforma um objeto em outro
+        // transforma um objeto em outro
         return dto;
     }
 
+    /*
+     * @Transactional(readOnly = true)
+     * public List<GameMinDTO> findByLIst(Long listId) {
+     * List<GameMinProjection> result = gameRepository.searchByList(listId);
+     * List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
+     * // o stream é responsavel por
+     * // transforma um objeto em outro
+     * return dto;
+     * }
+     */
+
     @Transactional(readOnly = true)
-    public List<GameMinDTO> findByLIst(Long listId) {
-        List<GameMinProjection> result = gameRepository.searchByList(listId);
-        List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList(); // o stream é responsavel por
-                                                                   // transforma um objeto em outro
-        return dto;
+    public List<GameMinDTO> findByName(String title) {
+        List<Game> result = gameRepository.findByTitleContainingIgnoreCase(title); // Usa o método personalizado
+        return result.stream().map(GameMinDTO::new).toList(); // Converte para DTO
     }
-    
 
 }

@@ -20,17 +20,15 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-   @GetMapping("/games")
-public String showGamePage(Model model) {
-    // Teste inicial para evitar DTOs
-    List<GameMinDTO> games = gameService.findAll();
-    model.addAttribute("games", games);
-    return "index";
-}
+    @GetMapping("/games")
+    public String showGamePage(Model model) {
+        // Teste inicial para evitar DTOs
+        List<GameMinDTO> games = gameService.findAll();
+        model.addAttribute("games", games);
+        return "index";
+    }
 
-    
-
-  // Endpoint para exibir detalhes de um jogo específico
+    // Endpoint para exibir detalhes de um jogo específico
     @GetMapping("/games/{id}")
     public String showGameDetails(@PathVariable Long id, Model model) {
         GameDTO game = gameService.findById(id);
@@ -45,4 +43,20 @@ public String showGamePage(Model model) {
         model.addAttribute("game", game);
         return "game-details"; // Redireciona para a página de detalhes
     }
+
+    @GetMapping("/games/searchByName")
+    public String searchGameByName(@RequestParam String title, Model model) {
+        List<GameMinDTO> games = gameService.findByName(title); // Busca jogos pelo título
+        model.addAttribute("games", games); // Adiciona os jogos encontrados ao modelo
+
+        // Verifica se a lista está vazia e adiciona uma mensagem
+        if (games.isEmpty()) {
+            model.addAttribute("message", "Nenhum jogo encontrado com o título: " + title
+        + " <br>Clique no botão BUSCAR sem escrever nada que traz para a tela inicial");
+            
+        }
+
+        return "index"; // Reaproveita a página inicial para exibir os resultados
+    }
+
 }
