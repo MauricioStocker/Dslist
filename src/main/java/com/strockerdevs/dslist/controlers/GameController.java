@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,8 @@ import com.strockerdevs.dslist.services.GameService;
 import java.io.IOException;
 import java.util.List;
 
-@Controller // Usar @Controller para servir páginas HTML
+
+@RestController // Usar @Controller para servir páginas HTML
 public class GameController {
 
     @Autowired
