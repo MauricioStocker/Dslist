@@ -135,58 +135,54 @@
     </header>
 
     <main>
-        <form id="addGameForm" enctype="multipart/form-data">
-            <label for="title">Título:</label>
-            <input type="text" id="title" name="title" required><br>
-
-            <label for="score">Pontuação (0 a 10):</label>
-            <input type="number" id="score" name="score" min="0" max="10" required><br>
-
-            <label for="year">Ano de Lançamento:</label>
-            <input 
-                type="text" 
-                id="year" 
-                name="year" 
-                required 
-                maxlength="4" 
-                pattern="^\d{1,4}$" 
-                title="Digite apenas números com no máximo 4 dígitos"
-                placeholder="Ex.: 2023">
-                <br><br>
-
-            <label for="genre">Gênero:</label>
-            <select id="genre" name="genre" required>
-                <option value="Platform">Platform</option>
-                <option value="Action">Action</option>
-                <option value="Adventure">Adventure</option>
-                <option value="RPG">RPG</option>
-                <option value="Strategy">Strategy</option>
-            </select><br>
-
-            <!-- Alteração: Plataformas agora como string única -->
-            <label for="platforms">Plataforma:</label>
-            <select id="platforms" name="platforms" required>
-                <option value="XBox">XBox</option>
-                <option value="Playstation">Playstation</option>
-                <option value="Nintendo">Nintendo</option>
-                <option value="PC">PC</option>
-            </select><br>
-
-            <label for="imageFile">Imagem:</label>
-            <input type="file" id="imageFile" name="imageFile" required><br>
-
-            <label for="shortDescription">Descrição Curta:</label>
-            <textarea id="shortDescription" name="shortDescription" required></textarea><br>
-
-            <label for="longDescription">Descrição Longa:</label>
-            <textarea id="longDescription" name="longDescription" required></textarea><br>
-
-            <button type="submit">Adicionar Jogo</button>
+        <form id="addGameForm" action="/add" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="title">Título:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+        
+            <div>
+                <label for="year">Ano de Lançamento:</label>
+                <input type="number" id="year" name="year" required>
+            </div>
+        
+            <div>
+                <label for="genre">Gênero:</label>
+                <input type="text" id="genre" name="genre" required>
+            </div>
+        
+            <div>
+                <label for="platforms">Plataformas:</label>
+                <input type="text" id="platforms" name="platforms" required>
+            </div>
+        
+            <div>
+                <label for="score">Nota:</label>
+                <input type="number" id="score" name="score" min="0" max="10" required>
+            </div>
+    
+        
+            <div>
+                <label for="imageUrls">Imagens do Jogo:</label>
+                <input type="file" id="imageUrls" name="imageFiles" multiple required>
+                <!-- Permite o envio de múltiplos arquivos -->
+            </div>
+        
+            <div>
+                <label for="shortDescription">Descrição Curta:</label>
+                <textarea id="shortDescription" name="shortDescription" required></textarea>
+            </div>
+        
+            <div>
+                <label for="longDescription">Descrição Longa:</label>
+                <textarea id="longDescription" name="longDescription" required></textarea>
+            </div>
+        
+            <button type="submit">Cadastrar Jogo</button>
         </form>
     </main>
 
     <script>
-        // Função de validação
         document.getElementById("addGameForm").onsubmit = async function (event) {
             event.preventDefault();
 
@@ -211,8 +207,8 @@
                 title: formData.get("title"),
                 score: formData.get("score"),
                 year: formData.get("year"),
-                genre: formData.get("genre"), // Gênero como string
-                platforms: formData.get("platforms"), // Plataforma como string
+                genre: formData.get("genre"), 
+                platforms: formData.get("platforms"),
                 shortDescription: formData.get("shortDescription"),
                 longDescription: formData.get("longDescription"),
             });

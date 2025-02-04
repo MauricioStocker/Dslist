@@ -1,31 +1,18 @@
 package com.strockerdevs.dslist.services;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.UUID;
-
+import com.strockerdevs.dslist.dto.GameDTO;
+import com.strockerdevs.dslist.dto.GameMinDTO;
+import com.strockerdevs.dslist.entities.Game;
+import com.strockerdevs.dslist.entities.Image;
+import com.strockerdevs.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.strockerdevs.dslist.dto.GameDTO;
-import com.strockerdevs.dslist.dto.GameMinDTO;
-import com.strockerdevs.dslist.entities.Game;
-import com.strockerdevs.dslist.projections.GameMinProjection;
-import com.strockerdevs.dslist.repositories.GameRepository;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.UUID;
-
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -33,66 +20,64 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
 
+    @Autowired ImageService imageService;
 
-    @Value("${game.upload-dir}") // A pasta onde as imagens serão armazenadas (pode ser configurada no application.properties)
-    private String uploadDir;
-
-    public Game saveGame(GameDTO gameDto) throws IOException {
-        // Processar a imagem
-        String imgName = saveImage(gameDto.getImageFile());
-
-        // Criar a entidade Game com os dados do DTO
+    @Transactional
+    public Game saveGameWithImages(GameDTO gameDto, List<MultipartFile> imageFiles) throws IOException {
+        // Criação do objeto Game com as informações de gameDto
         Game game = new Game();
         game.setTitle(gameDto.getTitle());
-        game.setScore(gameDto.getScore());
-        game.setYear(gameDto.getYear());
         game.setGenre(gameDto.getGenre());
         game.setPlatforms(gameDto.getPlatforms());
-        game.setImgUrl(imgName); // Salvar o nome da imagem no banco
+        game.setScore(gameDto.getScore());
         game.setShortDescription(gameDto.getShortDescription());
         game.setLongDescription(gameDto.getLongDescription());
+        game.setYear(gameDto.getYear());
 
-        return gameRepository.save(game); // Salvar no banco de dados
+        // Salvar o jogo no banco
+        game = gameRepository.save(game);
+
+        // Salvar as imagens utilizando o ImageService
+        for (MultipartFile imageFile : imageFiles) {
+            // Aqui o ImageService cuida do upload da imagem e da persistência
+            imageService.saveImage(game.getId(), imageFile, false);  // O false indica que a imagem não é principal
+        }
+
+        return game;
     }
 
-    private String saveImage(MultipartFile imageFile) throws IOException {
-        String fileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename(); // Gerar nome único para o arquivo
-        Path targetLocation = Paths.get(uploadDir).resolve(fileName);
-        Files.copy(imageFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING); // Salvar o arquivo
-        return "/images/" + fileName; // Retornar o caminho relativo para o banco de dados
-    }
 
-    @Transactional(readOnly = true) // faz com que a busca ou a não escrica, so leitura seja mais rapida
+
+    @Transactional(readOnly = true)
     public GameDTO findById(Long id) {
-        Game result = gameRepository.findById(id).get();// demos um get pois o id do game que traz é um objeto, assim
-                                                        // ele encontra os dados necessarios
-        GameDTO dto = new GameDTO(result);
-        return dto;
+        Game result = gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game not found"));
+        return new GameDTO(result);
     }
 
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll() {
         List<Game> result = gameRepository.findAll();
-        List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList(); // o stream é responsavel por
-        // transforma um objeto em outro
-        return dto;
+        return result.stream().map(GameMinDTO::new).toList();
     }
-
-    /*
-     * @Transactional(readOnly = true)
-     * public List<GameMinDTO> findByLIst(Long listId) {
-     * List<GameMinProjection> result = gameRepository.searchByList(listId);
-     * List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
-     * // o stream é responsavel por
-     * // transforma um objeto em outro
-     * return dto;
-     * }
-     */
 
     @Transactional(readOnly = true)
     public List<GameMinDTO> findByName(String title) {
-        List<Game> result = gameRepository.findByTitleContainingIgnoreCase(title); // Usa o método personalizado
-        return result.stream().map(GameMinDTO::new).toList(); // Converte para DTO
+        List<Game> result = gameRepository.findByTitleContainingIgnoreCase(title);
+        return result.stream().map(GameMinDTO::new).toList();
     }
+
+    @Transactional(readOnly = true)
+public GameDTO findByIdWithImages(Long id) {
+    Game result = gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game not found"));
+    GameDTO dto = new GameDTO(result);
+
+    // Adicionando as URLs das imagens no DTO
+    List<String> imageUrls = result.getImages().stream()
+                                    .map(Image::getUrl)
+                                    .collect(Collectors.toList());
+    dto.setImgUrls(imageUrls);  // Supondo que você tenha um campo imageUrls no DTO
+
+    return dto;
+}
 
 }

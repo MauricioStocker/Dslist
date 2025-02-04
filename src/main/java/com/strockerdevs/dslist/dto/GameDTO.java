@@ -1,9 +1,13 @@
 package com.strockerdevs.dslist.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.strockerdevs.dslist.entities.Game;
+import com.strockerdevs.dslist.entities.Image;
 
 public class GameDTO {
 
@@ -13,21 +17,21 @@ public class GameDTO {
     private String genre;
     private String platforms;
     private Double score;
-    private String imgUrl;
+    private List<String> imgUrls; // Alterado para uma lista
     private String shortDescription;
     private String longDescription;
     private MultipartFile imageFile;
 
     public GameDTO() {
-
     }
 
     public GameDTO(Game game) {
-        BeanUtils.copyProperties(game, this);// usar essa lib de BEans ajuda no cod para reduzir as linhas, em vez de vc chamar this.id = game.id, vc usa o bens e copy, que tudo que tiver na classe ele referencia
-
+        BeanUtils.copyProperties(game, this);
+        this.imgUrls = game.getImages().stream()
+                            .map(Image::getUrl) // Transforme as imagens em URLs
+                            .collect(Collectors.toList());
     }
 
-    
     public Long getId() {
         return id;
     }
@@ -76,12 +80,12 @@ public class GameDTO {
         this.score = score;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public List<String> getImgUrls() {
+        return imgUrls;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImgUrls(List<String> imgUrls) {
+        this.imgUrls = imgUrls;
     }
 
     public String getShortDescription() {
@@ -98,6 +102,14 @@ public class GameDTO {
 
     public void setLongDescription(String longDescription) {
         this.longDescription = longDescription;
+    }
+
+    public MultipartFile getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
     }
 
     @Override
@@ -124,13 +136,7 @@ public class GameDTO {
             return false;
         return true;
     }
-
-    public MultipartFile getImageFile() {
-        return imageFile;
-    }
-
-    public void setImageFile(MultipartFile imageFile) {
-        this.imageFile = imageFile;
-    }
+    
+   
 
 }

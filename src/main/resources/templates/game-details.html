@@ -83,6 +83,27 @@
             color: #f2b600; /* Cor destacada para títulos */
         }
 
+        /* Lista de imagens */
+        .image-thumbnails {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .image-thumbnail {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .image-thumbnail:hover {
+            transform: scale(1.1);
+        }
+
         /* Destaque para as descrições */
         .game-details .short-description, .game-details .long-description {
             font-family: 'Verdana', sans-serif;
@@ -118,8 +139,9 @@
 
     <main>
         <div class="game-detail-card">
-            <!-- Imagem do jogo -->
-            <img th:src="${game.imgUrl}" alt="Imagem do Jogo" class="game-image">
+            <!-- Imagem central do jogo -->
+            <img id="mainGameImage" th:src="${#lists.isEmpty(game.imgUrls) ? '' : game.imgUrls[0]}" alt="Imagem do Jogo" class="game-image">
+
 
             <!-- Detalhes do jogo -->
             <div class="game-details">
@@ -141,9 +163,24 @@
                     <p th:text="${game.longDescription}"></p>
                 </div>
 
+                <!-- Lista de imagens -->
+                <div class="image-thumbnails">
+                    <div th:each="image : ${game.imgUrls}">
+                        <img th:src="@{${image}}" alt="Imagem do jogo" class="image-thumbnail" onclick="changeMainImage(this)">
+                    </div>
+                </div>
+
                 <a href="/games" class="back-button">Voltar para a lista de jogos</a>
             </div>
         </div>
     </main>
+
+    <script>
+        // Função para mudar a imagem central ao clicar na miniatura
+        function changeMainImage(thumbnail) {
+            const mainImage = document.getElementById("mainGameImage");
+            mainImage.src = thumbnail.src;
+        }
+    </script>
 </body>
 </html>

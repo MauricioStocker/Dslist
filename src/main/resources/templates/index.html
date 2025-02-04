@@ -54,7 +54,6 @@
         /* Formulário de Busca */
         .search-form {
             margin-top: 4rem;
-            /* Ajuste para dar espaço ao botão */
             margin-bottom: 2rem;
             text-align: center;
         }
@@ -168,27 +167,6 @@
             background-color: #555;
         }
 
-        /* Botões de Categoria */
-        .category-buttons {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .category-buttons button {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin: 0 10px;
-        }
-
-        .category-buttons button:hover {
-            background-color: #555;
-        }
-
         /* Modal */
         .modal {
             display: none;
@@ -261,8 +239,7 @@
         </div>
 
         <!-- Mensagem de Alerta -->
-        <div th:if="${message}"
-            style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+        <div th:if="${message}" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
             <p th:utext="${message}"></p>
         </div>
 
@@ -270,7 +247,7 @@
         <div class="game-list">
             <div th:each="game : ${games}" class="game-item">
                 <a th:href="@{/games/{id}(id=${game.id})}">
-                    <img th:src="${game.imgUrl}" th:alt="${game.title}" class="game-image">
+                    <img th:src="@{${game.imgUrl}}" th:alt="${game.title}" class="game-image">
                     <h3 th:text="${game.title}"></h3>
                     <p th:text="${game.shortDescription}"></p>
                     <span>Ver Detalhes</span>
@@ -283,37 +260,7 @@
             <button th:href="@{/games/segment/{id}(id=${previousSegmentId})}">Anterior</button>
             <button th:href="@{/games/segment/{id}(id=${nextSegmentId})}">Próximo</button>
         </div>
-
-        <!-- Modal de Alerta -->
-        <div id="gameNotFoundModal" class="modal" th:if="${message}">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <p th:text="${message}"></p>
-                <a href="/games" class="btn btn-primary">OK</a>
-            </div>
-        </div>
     </main>
-
-    <!-- Scripts -->
-    <script>
-        // Abrir o modal quando houver uma mensagem
-        if (document.getElementById("gameNotFoundModal")) {
-            document.getElementById("gameNotFoundModal").style.display = "block";
-        }
-
-        // Fechar o modal
-        function closeModal() {
-            document.getElementById("gameNotFoundModal").style.display = "none";
-        }
-
-        // Fechar o modal quando clicar fora dele
-        window.onclick = function (event) {
-            var modal = document.getElementById("gameNotFoundModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
 </body>
 
 </html>
