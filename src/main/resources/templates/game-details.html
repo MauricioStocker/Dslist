@@ -1,186 +1,343 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Jogo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes do Jogo - Stocker Games</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arial&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        /* Fundo e estilo geral */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #87cefa, #b3e0ff); /* Degradê de azul claro */
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            text-align: center;
-            background-color: rgba(34, 34, 34, 0.8); /* Fundo escuro com transparência */
-            padding: 20px;
-            margin-bottom: 40px;
-            border-radius: 8px;
-        }
-
-        header h1 {
-            font-size: 3rem;
-            color: #f2b600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* Card de detalhes do jogo */
+      /* Estilo para o vídeo de fundo */
+      .background-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1; /* Garante que o vídeo fique no fundo */
+      }
+      /* Camada semi-transparente para melhorar contraste */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.6
+        ); /* Mais escuro para maior contraste */
+        z-index: 0; /* Fica acima do vídeo, mas abaixo dos elementos interativos */
+      }
+      /* Cabeçalho com barra fixa */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: rgba(
+          30,
+          30,
+          30,
+          0.9
+        ); /* Fundo mais claro para o cabeçalho */
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 2; /* Fica acima do overlay */
+      }
+      /* Logo */
+      .logo {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 50px; /* Bordas arredondadas para o container da logo */
+      }
+      .logo img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%; /* Torna a logo redonda */
+        object-fit: cover; /* Garante que a imagem preencha o círculo corretamente */
+      }
+      .logo h1 {
+        margin-left: 10px;
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 0; /* Remove margem inferior para alinhamento perfeito */
+      }
+      /* Botões de navegação */
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center; /* Centraliza verticalmente */
+      }
+      .nav-button,
+      .back-button {
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.8
+        ); /* Fundo escuro semi-transparente */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 25px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease; /* Efeito suave */
+        text-decoration: none;
+        margin-right: 20px; /* Adiciona um espaço da margem direita */
+        display: inline-block; /* Garante que o link tenha comportamento de botão */
+      }
+      .nav-button:hover,
+      .back-button:hover {
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.9
+        ); /* Fundo mais escuro ao passar o mouse */
+        transform: scale(1.05); /* Aumenta ligeiramente o botão */
+        margin-right: 20px; /* Adiciona um espaço da margem direita */
+      }
+      /* Seção de conteúdo */
+      .content-container {
+        margin-top: 80px; /* Espaço para o cabeçalho fixo */
+        padding: 20px;
+        color: white; /* Texto branco para melhor contraste */
+        text-align: center;
+        position: relative;
+        z-index: 1; /* Garante que o conteúdo fique acima do overlay */
+      }
+      .content-container h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+      /* Card de detalhes do jogo */
+      .game-detail-card {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+        margin: 0 auto;
+        max-width: 1200px;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.8
+        ); /* Fundo escuro semi-transparente */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+      }
+      /* Imagem principal do jogo */
+      .game-image {
+        width: 100%; /* Ocupa toda a largura do contêiner */
+        height: 450px; /* Altura fixa para o contêiner */
+        object-fit: cover; /* Preenche o contêiner, cortando apenas o necessário */
+        background-color: #333; /* Cor de fundo para áreas vazias */
+        border-radius: 10px;
+      }
+      /* Detalhes do jogo */
+      .game-details {
+        max-width: 600px;
+        color: #bbb;
+        text-align: left;
+      }
+      .game-details h2 {
+        font-size: 2rem;
+        color: #f2b600;
+        margin-bottom: 20px;
+      }
+      .game-details p {
+        font-size: 1rem; /* Fonte ajustada para tamanho normal */
+        line-height: 1.6;
+        margin: 10px 0;
+      }
+      .game-details strong {
+        font-weight: bold;
+        color: #f2b600; /* Cor destacada para títulos */
+      }
+      /* Lista de imagens */
+      .image-thumbnails {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        overflow-x: auto;
+      }
+      .image-thumbnail {
+        width: 80px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      .image-thumbnail:hover {
+        transform: scale(1.1);
+      }
+      /* Destaque para as descrições */
+      .game-details .short-description,
+      .game-details .long-description {
+        font-family: "Verdana", sans-serif;
+        font-size: 1.1rem;
+        font-style: italic;
+        color: #ddd;
+        margin-top: 15px;
+      }
+      /* Botão de volta */
+      .back-button {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 25px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 20px;
+        display: inline-block;
+      }
+      .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+        transform: scale(1.05);
+      }
+      /* Responsividade */
+      @media (max-width: 768px) {
         .game-detail-card {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            margin: 0 20px;
-            background-image: url('https://example.com/super-mario-background.jpg'); /* Imagem de fundo */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+          flex-direction: column;
+          align-items: center;
         }
-
-        /* Imagem do jogo */
         .game-image {
-            width: 300px;
-            height: 450px;
-            object-fit: cover;
-            border-radius: 10px;
+          width: 100%;
+          height: auto;
         }
-
-        /* Detalhes do jogo */
-        .game-details {
-            max-width: 600px;
-            color: #bbb;
-            text-align: left;
-            background-color: rgba(28, 28, 28, 0.8); /* Transparência para destacar a imagem */
-            border-radius: 10px;
-            padding: 20px;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .game-details h2 {
-            font-size: 2rem;
-            color: #f2b600;
-            margin-bottom: 20px;
-        }
-
-        .game-details p {
-            font-size: 1rem; /* Fonte ajustada para tamanho normal */
-            line-height: 1.6;
-            margin: 10px 0;
-        }
-
-        .game-details strong {
-            font-weight: bold;
-            color: #f2b600; /* Cor destacada para títulos */
-        }
-
-        /* Lista de imagens */
-        .image-thumbnails {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            overflow-x: auto;
-        }
-
-        .image-thumbnail {
-            width: 80px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .image-thumbnail:hover {
-            transform: scale(1.1);
-        }
-
-        /* Destaque para as descrições */
-        .game-details .short-description, .game-details .long-description {
-            font-family: 'Verdana', sans-serif;
-            font-size: 1.1rem;
-            font-style: italic;
-            color: #ddd;
-            margin-top: 15px;
-        }
-
-        /* Botão de volta */
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #333;
-            color: #f2b600;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-size: 1.1rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .back-button:hover {
-            background-color: #444;
-        }
-
+      }
+      footer {
+        background: rgba(30, 30, 30, 0.9); /* Fundo escuro semi-transparente */
+        color: white;
+        text-align: center;
+        padding: 20px 10px;
+        position: relative;
+        z-index: 2; /* Garante que o rodapé fique acima do overlay */
+        margin-top: 40px; /* Espaço entre o conteúdo e o rodapé */
+        font-size: 0.9rem;
+      }
+      footer p {
+        margin: 5px 0;
+      }
+      footer a {
+        color: #f2b600; /* Cor destacada para links */
+        text-decoration: none;
+        font-weight: bold;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- Vídeo de Fundo -->
+    <video class="background-video" autoplay muted loop>
+      <source
+        src="/videos/WhatsApp Video 2025-02-15 at 12.04.14.mp4"
+        type="video/mp4"
+      />
+      Seu navegador não suporta vídeos HTML5.
+    </video>
+    <!-- Camada Semi-Transparente -->
+    <div class="overlay"></div>
+    <!-- Cabeçalho -->
     <header>
-        <h1>Detalhes do Jogo</h1>
+      <div class="logo">
+        <img
+          th:src="@{/images/256da44e-cf55-4446-b130-818e92b8ba18.png}"
+          alt="Logo StockerGames"
+        />
+        <h1>Stocker Games</h1>
+      </div>
+      <div class="nav-buttons">
+        <a href="/" class="back-button">Voltar à Home</a>
+      </div>
     </header>
-
-    <main>
+    <!-- Conteúdo -->
+    <div class="content-container">
+      <section>
+        <h1>Detalhes do Jogo</h1>
         <div class="game-detail-card">
-            <!-- Imagem central do jogo -->
-            <img id="mainGameImage" th:src="${#lists.isEmpty(game.imgUrls) ? '' : game.imgUrls[0]}" alt="Imagem do Jogo" class="game-image">
+          <!-- Imagem central do jogo -->
+          <img
+            id="mainGameImage"
+            th:src="${#lists.isEmpty(game.imgUrls) ? '' : game.imgUrls[0]}"
+            alt="Imagem do Jogo"
+            class="game-image"
+          />
 
-
-            <!-- Detalhes do jogo -->
-            <div class="game-details">
-                <h2 th:text="${game.title}"></h2>
-                <p><strong>Ano:</strong> <span th:text="${game.year}"></span></p>
-                <p><strong>Gênero:</strong> <span th:text="${game.genre}"></span></p>
-                <p><strong>Plataformas:</strong> <span th:text="${game.platforms}"></span></p>
-                <p><strong>Nota:</strong> <span th:text="${game.score}"></span></p>
-
-                <!-- Descrição curta -->
-                <div class="short-description">
-                    <strong>Descrição curta:</strong>
-                    <p th:text="${game.shortDescription}"></p>
-                </div>
-
-                <!-- Descrição longa -->
-                <div class="long-description">
-                    <strong>Descrição longa:</strong>
-                    <p th:text="${game.longDescription}"></p>
-                </div>
-
-                <!-- Lista de imagens -->
-                <div class="image-thumbnails">
-                    <div th:each="image : ${game.imgUrls}">
-                        <img th:src="@{${image}}" alt="Imagem do jogo" class="image-thumbnail" onclick="changeMainImage(this)">
-                    </div>
-                </div>
-
-                <a href="/games" class="back-button">Voltar para a lista de jogos</a>
+          <!-- Detalhes do jogo -->
+          <div class="game-details">
+            <h2 th:text="${game.title}"></h2>
+            <p><strong>Ano:</strong> <span th:text="${game.year}"></span></p>
+            <p>
+              <strong>Gênero:</strong> <span th:text="${game.genre}"></span>
+            </p>
+            <p>
+              <strong>Plataformas:</strong>
+              <span th:text="${game.platforms}"></span>
+            </p>
+            <p><strong>Nota:</strong> <span th:text="${game.score}"></span></p>
+            <!-- Descrição curta -->
+            <div class="short-description">
+              <strong>Descrição curta:</strong>
+              <p th:text="${game.shortDescription}"></p>
             </div>
+            <!-- Descrição longa -->
+            <div class="long-description">
+              <strong>Descrição longa:</strong>
+              <p th:text="${game.longDescription}"></p>
+            </div>
+            <!-- Lista de imagens -->
+            <div class="image-thumbnails">
+              <div th:each="image : ${game.imgUrls}">
+                <img
+                  th:src="@{${image}}"
+                  alt="Imagem do jogo"
+                  class="image-thumbnail"
+                  onclick="changeMainImage(this)"
+                />
+              </div>
+            </div>
+            <a href="/" class="back-button">Voltar à Home</a>
+          </div>
         </div>
-    </main>
-
+      </section>
+    </div>
     <script>
-        // Função para mudar a imagem central ao clicar na miniatura
-        function changeMainImage(thumbnail) {
-            const mainImage = document.getElementById("mainGameImage");
-            mainImage.src = thumbnail.src;
-        }
+      // Função para mudar a imagem central ao clicar na miniatura
+      function changeMainImage(thumbnail) {
+        const mainImage = document.getElementById("mainGameImage");
+        mainImage.src = thumbnail.src;
+      }
     </script>
-</body>
+    <footer>
+      <p>Desenvolvido por <strong>Mauricio Stocker</strong></p>
+      <p>
+        &copy; 2025 <a href="/">Mauricio Stocker Corporations</a>. Todos os
+        direitos reservados.
+      </p>
+    </footer>
+  </body>
 </html>
