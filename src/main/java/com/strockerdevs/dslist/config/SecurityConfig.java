@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Rotas públicas (acessíveis sem autenticação)
-                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/h2-console/**","/videos/**").permitAll()
+                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/h2-console/**","/videos/**","/images/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN") // Apenas ADMIN pode acessar /admin/**
                 .requestMatchers("/games/add").hasRole("ADMIN") // Apenas ADMIN pode adicionar jogos
                 .requestMatchers("/games/**").permitAll()       // Outras páginas de jogos são públicas
