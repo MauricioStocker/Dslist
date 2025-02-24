@@ -9,14 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
     <style>
         /* Estilo para o vídeo de fundo */
-        .background-video {
+        .background-image {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            z-index: -1; /* Garante que o vídeo fique no fundo */
+            background-image: url("/images/mariokong.png");
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            /* Garante que a imagem fique no fundo */
         }
         /* Camada semi-transparente para melhorar contraste */
         .overlay {
@@ -185,18 +188,15 @@
     </style>
 </head>
 <body>
-    <!-- Vídeo de Fundo -->
-    <video class="background-video" autoplay muted loop>
-        <source src="/videos/a6698959-a0ca-4630-a00e-98b107f02b81.mp4" type="video/mp4" />
-        <source src="/videos/a6698959-a0ca-4630-a00e-98b107f02b81.webm" type="video/webm" />
-        Seu navegador não suporta vídeos HTML5.
-    </video>
+    <div class="background-container">
+        <img src="background.jpg" alt="Imagem de fundo" class="background-image">
+    </div>
     <!-- Camada Semi-Transparente -->
     <div class="overlay"></div>
     <!-- Cabeçalho -->
     <header>
         <div class="logo">
-            <img th:src="@{/images/256da44e-cf55-4446-b130-818e92b8ba18.png}" alt="Logo StockerGames">
+            <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames">
             <h1>Stocker Games</h1>
         </div>
         <div class="nav-buttons">

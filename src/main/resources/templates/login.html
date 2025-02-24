@@ -52,6 +52,7 @@
 </head>
 <body>
     <div class="form-container">
+    
         <h2>Login</h2>
         <form th:action="@{/login}" method="post">
             <input type="text" name="email" placeholder="Email" required>
@@ -64,8 +65,9 @@
         <div class="message" th:if="${param.logout}">
             Você saiu com sucesso.
         </div>
+        <!-- Link para "Esqueci minha Senha" -->
         <p style="text-align: center; margin-top: 10px;">
-            Não tem uma conta? <a th:href="@{/register}">Cadastre-se aqui</a>.
+            <a th:href="@{/forgot-password}">Esqueci minha senha</a>
         </p>
     </div>
 </body>

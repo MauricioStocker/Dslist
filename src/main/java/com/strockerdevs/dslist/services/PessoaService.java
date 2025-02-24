@@ -5,13 +5,17 @@ import com.strockerdevs.dslist.repositories.PessoaRepository;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PessoaService {
-    private final PessoaRepository pessoaRepository;
-    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private  PessoaRepository pessoaRepository;
+    @Autowired
+    private  PasswordEncoder passwordEncoder;
 
     public PessoaService(PessoaRepository pessoaRepository, PasswordEncoder passwordEncoder) {
         this.pessoaRepository = pessoaRepository;

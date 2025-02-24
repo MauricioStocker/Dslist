@@ -15,15 +15,18 @@
     />
     <style>
       /* Estilo para o vídeo de fundo */
-      .background-video {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1; /* Garante que o vídeo fique no fundo */
-      }
+      .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("/images/mariokong.png");
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            /* Garante que a imagem fique no fundo */
+        }
       /* Camada semi-transparente para melhorar contraste */
       .overlay {
         position: fixed;
@@ -76,7 +79,7 @@
         font-size: 1.5rem;
         margin-bottom: 0; /* Remove margem inferior para alinhamento perfeito */
       }
-      /* Botões de navegação */
+      /* Botões de navegação (Alteração para o estilo dourado) */
       .nav-buttons {
         display: flex;
         gap: 10px;
@@ -84,12 +87,7 @@
       }
       .nav-button,
       .back-button {
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.8
-        ); /* Fundo escuro semi-transparente */
+        background-color: rgba(242, 182, 0, 0.8); /* Fundo dourado semi-transparente */
         color: white;
         padding: 10px 15px;
         border: none;
@@ -104,14 +102,8 @@
       }
       .nav-button:hover,
       .back-button:hover {
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.9
-        ); /* Fundo mais escuro ao passar o mouse */
+        background-color: rgba(242, 182, 0, 1); /* Fundo dourado mais forte ao passar o mouse */
         transform: scale(1.05); /* Aumenta ligeiramente o botão */
-        margin-right: 20px; /* Adiciona um espaço da margem direita */
       }
       /* Seção de conteúdo */
       .content-container {
@@ -199,9 +191,9 @@
         color: #ddd;
         margin-top: 15px;
       }
-      /* Botão de volta */
+      /* Botão de volta (Alteração para o estilo dourado) */
       .back-button {
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: rgba(242, 182, 0, 0.8); /* Fundo dourado semi-transparente */
         color: white;
         padding: 10px 15px;
         border: none;
@@ -214,7 +206,7 @@
         display: inline-block;
       }
       .back-button:hover {
-        background-color: rgba(0, 0, 0, 0.9);
+        background-color: rgba(242, 182, 0, 1); /* Fundo dourado mais forte ao passar o mouse */
         transform: scale(1.05);
       }
       /* Responsividade */
@@ -253,11 +245,9 @@
   </head>
   <body>
     <!-- Vídeo de Fundo -->
-    <video class="background-video" autoplay muted loop>
-        <source src="/videos/a6698959-a0ca-4630-a00e-98b107f02b81.mp4" type="video/mp4" />
-        <source src="/videos/a6698959-a0ca-4630-a00e-98b107f02b81.webm" type="video/webm" />
-        Seu navegador não suporta vídeos HTML5.
-    </video>
+    <div class="background-container">
+      <img src="background.jpg" alt="Imagem de fundo" class="background-image">
+  </div>
     <!-- Camada Semi-Transparente -->
     <div class="overlay"></div>
     <!-- Cabeçalho -->
@@ -332,10 +322,10 @@
       }
     </script>
     <footer>
-      <p>Desenvolvido por <strong>Mauricio Stocker</strong></p>
+      <p>Desenvolvido por Maurício Stocker</p>
       <p>
-        &copy; 2025 <a href="/">Mauricio Stocker Corporations</a>. Todos os
-        direitos reservados.
+        <a href="https://github.com/mauriciostocker">GitHub</a> |
+        <a href="https://www.linkedin.com/in/mauriciostocker">LinkedIn</a>
       </p>
     </footer>
   </body>

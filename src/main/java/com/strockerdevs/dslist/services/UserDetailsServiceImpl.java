@@ -4,6 +4,7 @@ import com.strockerdevs.dslist.entities.Pessoa;
 import com.strockerdevs.dslist.repositories.PessoaRepository;
 import com.strockerdevs.dslist.security.UserDetailsImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,7 +14,9 @@ import java.util.Collections;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final PessoaRepository pessoaRepository;
+
+    @Autowired
+    private  PessoaRepository pessoaRepository;
 
     public UserDetailsServiceImpl(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
