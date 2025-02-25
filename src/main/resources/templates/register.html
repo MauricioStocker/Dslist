@@ -1,74 +1,226 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/images/mariomoreno.png">
-    <title>Cadastro</title>
+    <title>Cadastro - Stocker Games</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            background-image: url("/images/telalogin.png");
+            background-size: cover;
+            background-position: center;
         }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+
         .form-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
+            background-color: rgba(34, 34, 34, 0.9);
+            padding: 30px;
+            border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 300px;
+            position: relative;
+            z-index: 1;
         }
+
         .form-container h2 {
             text-align: center;
             margin-bottom: 20px;
+            color: #f2b600;
+            font-size: 2rem;
         }
-        .form-container input, .form-container select {
+
+        .form-container input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: none;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-sizing: border-box;
         }
+
+        .form-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         .form-container button {
             width: 100%;
             padding: 10px;
-            background-color: #333;
+            background-color: #f2b600;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 50px;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(242, 182, 0, 0.5);
         }
+
         .form-container button:hover {
-            background-color: #555;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(242, 182, 0, 0.7);
         }
-        .message {
-            text-align: center;
-            margin-top: 10px;
-            color: green;
-        }
+
+        .message,
         .error-message {
             text-align: center;
             margin-top: 10px;
-            color: red;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .message {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+
+        .error-message {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+        }
+
+        a {
+            color: #f2b600;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #f2b600;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+            color: #ffcd4d;
+        }
+
+        /* Ajuste para evitar que o conteúdo fique sob o rodapé */
+        .content-wrapper {
+            margin-bottom: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .back-link {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background-color: rgba(34, 34, 34, 0.9);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            background-color: rgba(242, 182, 0, 0.2);
+            text-decoration: none;
+        }
+
+        .back-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            position: relative;
+        }
+
+        .back-icon::before {
+            content: '←';
+            font-size: 20px;
+            line-height: 1;
         }
     </style>
 </head>
+
 <body>
+    <div class="overlay"></div>
     <div class="form-container">
         <h2>Cadastro</h2>
         <form th:action="@{/register}" method="post" th:object="${pessoa}">
             <input type="text" th:field="*{nome}" placeholder="Nome" required>
             <input type="email" th:field="*{email}" placeholder="Email" required>
             <input type="password" th:field="*{senha}" placeholder="Senha" required>
+            <a href="/" class="back-link">
+                <span class="back-icon"></span>
+                Voltar para Home
+            </a>
             <button type="submit">Cadastrar</button>
         </form>
         <div class="message" th:if="${successMessage}" th:text="${successMessage}"></div>
         <div class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-        <p style="text-align: center; margin-top: 10px;">
+        <p>
             Já tem uma conta? <a th:href="@{/login}">Faça login aqui</a>.
+           
         </p>
-    </div>
+       
+           
+       
+   
+    <footer>
+        <p>Desenvolvido por Maurício Stocker</p>
+        <p>
+            <a href="https://github.com/mauriciostocker">GitHub</a> |
+            <a href="https://www.linkedin.com/in/mauriciostocker">LinkedIn</a>
+        </p>
+    </footer>
 </body>
+
 </html>

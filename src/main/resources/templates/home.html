@@ -248,7 +248,7 @@
       <div class="header-buttons">
         <!-- Identificação do Usuário Logado -->
         <span th:if="${isAuthenticated}" class="user-info">
-          Olá, <span th:text="${username}"></span> (<span th:text="${role}"></span>)
+          Olá, <span th:text="${username}"></span> 
         </span>
         <!-- Botões para Usuários Não Autenticados -->
         <a th:href="@{/register}" class="animated-button"th:unless="${isAuthenticated}">
@@ -319,9 +319,10 @@
     </div>
     <!-- Rodapé -->
     <footer>
-      <p>Desenvolvido por <strong>Mauricio Stocker</strong></p>
+      <p>Desenvolvido por Maurício Stocker</p>
       <p>
-        &copy; 2025 <a href="/">Mauricio Stocker Corporations</a>. Todos os direitos reservados.
+        <a href="https://github.com/mauriciostocker">GitHub</a> |
+        <a href="https://www.linkedin.com/in/mauriciostocker">LinkedIn</a>
       </p>
     </footer>
     <!-- Script para manipular o menu expandido -->
