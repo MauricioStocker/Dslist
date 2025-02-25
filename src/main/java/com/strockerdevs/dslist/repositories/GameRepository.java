@@ -1,7 +1,7 @@
 package com.strockerdevs.dslist.repositories;
 
 import com.strockerdevs.dslist.entities.Game;
-import com.strockerdevs.dslist.projections.GameMinProjection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

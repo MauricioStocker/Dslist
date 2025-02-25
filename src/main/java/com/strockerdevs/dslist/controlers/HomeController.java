@@ -30,7 +30,8 @@ public class HomeController {
 
         if (isAuthenticated) {
             // Adiciona o nome do usuário ao modelo
-           String email = authentication.getName();
+           @SuppressWarnings("null")
+        String email = authentication.getName();
             Pessoa pessoa = pessoaService.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
