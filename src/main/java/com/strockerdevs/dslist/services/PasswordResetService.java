@@ -3,6 +3,7 @@ package com.strockerdevs.dslist.services;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ public class PasswordResetService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -25,6 +27,10 @@ public class PasswordResetService {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    // Injeta a URL base da aplicação
+    @Value("${app.base-url}")
+    private String appBaseUrl;
 
     public String createPasswordResetTokenForUser(String email) {
         Pessoa user = pessoaRepository.findByEmail(email)
@@ -51,7 +57,7 @@ public class PasswordResetService {
         message.setTo(email);
         message.setSubject("Redefinição de Senha");
         message.setText("Você solicitou a redefinição de senha. Use o seguinte link para redefinir sua senha: "
-                + "http://localhost:8080/reset-password?token=" + token);
+                + appBaseUrl + "/reset-password?token=" + token); // Usa a URL base dinâmica
         mailSender.send(message);
     }
 
