@@ -1,341 +1,378 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Referência ao Favicon -->
-    <link rel="icon" type="image/png" href="/images/mariomoreno.png" />
-    <title>Home - Stocker Games</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <style>
-      /* Estilo para a imagem de fundo */
-      .background-image {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("/images/mariokong.png");
-        background-size: cover;
-        background-position: center;
-        z-index: -1; /* Garante que a imagem fique no fundo */
-      }
-      /* Camada semi-transparente para melhorar contraste */
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        z-index: 0;
-      }
-      /* Cabeçalho */
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-        background: rgba(34, 34, 34, 0.9);
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 2;
-        box-shadow: 0 2px 5px rgba(32, 32, 32, 0.2);
-      }
-      /* Logo */
-      .logo {
-        display: flex;
-        align-items: center;
-      }
-      .logo img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-      .logo h1 {
-        margin-left: 10px;
-        color: white;
-        font-size: 1.5rem;
-        margin-bottom: 0;
-      }
-      /* Informações do Usuário Logado */
-      .user-info {
-        color: #ffffff; /* Cor branca para destaque */
-        font-weight: bold;
-        margin-right: 20px; /* Espaçamento para evitar sobreposição */
-      }
-      /* Botões no cabeçalho */
-      .header-buttons {
-        display: flex;
-        align-items: center;
-        gap: 10px; /* Espaço entre os botões */
-        margin-right: 20px;
-      }
-      /* Estilo para botões animados */
-      .animated-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f2b600;
-        color: white;
-        font-size: 0.9rem;
-        font-weight: bold;
-        padding: 8px 16px;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 5px 15px rgba(242, 182, 0, 0.5);
-        position: relative;
-        overflow: hidden;
-      }
-      .animated-button:hover {
-        transform: scale(1.1);
-        box-shadow: 0 10px 20px rgba(242, 182, 0, 0.7);
-      }
-      .animated-button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.5s ease;
-      }
-      .animated-button:hover::before {
-        transform: scaleX(1);
-      }
-      .animated-button i {
-        margin-right: 10px;
-        font-size: 1.2rem;
-      }
-      /* Botão Hambúrguer */
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Referência ao Favicon -->
+  <link rel="icon" type="image/png" href="/images/mariomoreno.png" />
+  <title>Home - Stocker Games</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ER4FGG7H2X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-ER4FGG7H2X');
+  </script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* Estilo para a imagem de fundo */
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("/images/mariokong.png");
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      /* Garante que a imagem fique no fundo */
+    }
+
+    /* Camada semi-transparente para melhorar contraste */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+
+    /* Cabeçalho */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: rgba(34, 34, 34, 0.9);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      box-shadow: 0 2px 5px rgba(32, 32, 32, 0.2);
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .logo h1 {
+      margin-left: 10px;
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 0;
+    }
+
+    /* Informações do Usuário Logado */
+    .user-info {
+      color: #ffffff;
+      /* Cor branca para destaque */
+      font-weight: bold;
+      margin-right: 20px;
+      /* Espaçamento para evitar sobreposição */
+    }
+
+    /* Botões no cabeçalho */
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      /* Espaço entre os botões */
+      margin-right: 20px;
+    }
+
+    /* Estilo para botões animados */
+    .animated-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f2b600;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: bold;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 5px 15px rgba(242, 182, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .animated-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(242, 182, 0, 0.7);
+    }
+
+    .animated-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+
+    .animated-button:hover::before {
+      transform: scaleX(1);
+    }
+
+    .animated-button i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    /* Botão Hambúrguer */
+    .menu-icon {
+      position: absolute;
+      top: 70px;
+      /* Abaixo da barra superior */
+      left: 20px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    /* Menu Expandido */
+    .expanded-menu {
+      display: none;
+      position: absolute;
+      top: 110px;
+      /* Abaixo do botão hambúrguer */
+      left: 20px;
+      background: rgba(34, 34, 34, 0.9);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    .expanded-menu.active {
+      display: block;
+    }
+
+    .expanded-menu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .expanded-menu a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .expanded-menu a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Conteúdo */
+    .content-container {
+      margin-top: 80px;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+    }
+
+    .content-container h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .content-container p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    /* Cards de Funcionalidades */
+    .feature-card {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+    }
+
+    /* Rodapé */
+    footer {
+      background: rgba(30, 30, 30, 0.9);
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      position: relative;
+      z-index: 2;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+
+    footer a {
+      color: #f2b600;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
       .menu-icon {
-        position: absolute;
-        top: 70px; /* Abaixo da barra superior */
-        left: 20px;
-        font-size: 2rem;
-        color: white;
-        cursor: pointer;
-        z-index: 10;
+        display: block;
       }
-      /* Menu Expandido */
+
       .expanded-menu {
-        display: none;
-        position: absolute;
-        top: 110px; /* Abaixo do botão hambúrguer */
-        left: 20px;
-        background: rgba(34, 34, 34, 0.9);
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        z-index: 10;
+        left: 10px;
       }
-      .expanded-menu.active {
-        display: block;
-      }
-      .expanded-menu ul {
-        list-style: none;
-        padding: 0;
-      }
-      .expanded-menu a {
-        color: white;
-        text-decoration: none;
-        display: block;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
-      .expanded-menu a:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-      /* Conteúdo */
-      .content-container {
-        margin-top: 80px;
-        padding: 20px;
-        color: white;
-        text-align: center;
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 80vh;
-      }
-      .content-container h2 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-      }
-      .content-container p {
-        font-size: 1.2rem;
-        margin-bottom: 30px;
-      }
-      /* Cards de Funcionalidades */
-      .feature-card {
-        background-color: rgba(0, 0, 0, 0.8);
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px auto;
-        max-width: 600px;
-        text-align: center;
-        position: relative;
-        z-index: 1;
-      }
-      .feature-card h3 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-      }
-      .feature-card p {
-        font-size: 1rem;
-      }
-      /* Rodapé */
-      footer {
-        background: rgba(30, 30, 30, 0.9);
-        color: white;
-        text-align: center;
-        padding: 20px 10px;
-        position: relative;
-        z-index: 2;
-        margin-top: 40px;
-        font-size: 0.9rem;
-      }
-      footer p {
-        margin: 5px 0;
-      }
-      footer a {
-        color: #f2b600;
-        text-decoration: none;
-        font-weight: bold;
-      }
-      footer a:hover {
-        text-decoration: underline;
-      }
-      /* Responsividade */
-      @media (max-width: 768px) {
-        .menu-icon {
-          display: block;
-        }
-        .expanded-menu {
-          left: 10px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Imagem de Fundo -->
-    <div class="background-image"></div>
-    <!-- Camada Semi-Transparente -->
-    <div class="overlay"></div>
-    <!-- Cabeçalho -->
-    <header>
-      <div class="logo">
-        <img src="/images/mariomoreno.png" alt="Logo" />
-        <h1>Stocker Games</h1>
-      </div>
-      <div class="header-buttons">
-        <!-- Identificação do Usuário Logado -->
-        <span th:if="${isAuthenticated}" class="user-info">
-          Olá, <span th:text="${username}"></span> 
-        </span>
-        <!-- Botões para Usuários Não Autenticados -->
-        <a th:href="@{/register}" class="animated-button"th:unless="${isAuthenticated}">
-          <i class="fas fa-user-plus" ></i></i> Registrar
-        </a>
-        <a th:href="@{/login}" class="animated-button" th:unless="${isAuthenticated}">
-          <i class="fas fa-sign-in-alt"></i></i> Login
-        </a>
-        <!-- Botão de Logout para Usuários Autenticados -->
-        <form
-          th:action="@{/logout}"
-          method="post"
-          style="display: inline"
-          th:if="${isAuthenticated}"
-        >
-          <button type="submit" class="animated-button">
-            <i class="fas fa-sign-out-alt"></i> Sair
-          </button>
-        </form>
-      </div>
-      <!-- Ícone do Menu Hambúrguer -->
-      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
-    </header>
-    <!-- Menu Expandido -->
-    <div class="expanded-menu" id="expandedMenu">
-      <ul>
-        <li><a href="/games">Lista de Jogos</a></li>
-        <li th:if="${isAdmin}"><a href="/games/add">Adicionar Jogo</a></li>
-        <li th:if="${isAdmin}">
-          <a href="/admin/create-admin">Adicionar Administrador</a>
-        </li>
-        <li th:if="${isAdmin}">
-          <a href="/admin/dashboard">Dashboard de Admins</a>
-        </li>
-      </ul>
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Imagem de Fundo -->
+  <div class="background-image"></div>
+  <!-- Camada Semi-Transparente -->
+  <div class="overlay"></div>
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">
+      <img src="/images/mariomoreno.png" alt="Logo" />
+      <h1>Stocker Games</h1>
     </div>
-    <!-- Conteúdo -->
-    <div class="content-container">
-      <section>
-        <h2>Bem-vindo ao Stocker Games</h2>
-        <p>
-          A sua plataforma para descobrir, catalogar e avaliar os melhores
-          jogos.
-        </p>
-        <!-- Botão Animado -->
-        <a href="/games" class="animated-button">
-          <i class="fas fa-gamepad"></i> Conheça nossos jogos
-        </a>
-      </section>
-      <section>
-        <h2>Funcionalidades</h2>
-        <div class="feature-card">
-          <h3>Busca de Jogos</h3>
-          <p>Encontre facilmente o seu jogo favorito digitando o nome.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Adicionar Novo Jogo</h3>
-          <p>Contribua com nossa comunidade adicionando novos jogos à lista.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Avaliações e Comentários</h3>
-          <p>
-            Veja o que outros jogadores estão dizendo e compartilhe a sua
-            experiência.
-          </p>
-        </div>
-      </section>
+    <div class="header-buttons">
+      <!-- Identificação do Usuário Logado -->
+      <span th:if="${isAuthenticated}" class="user-info">
+        Olá, <span th:text="${username}"></span>
+      </span>
+      <!-- Botões para Usuários Não Autenticados -->
+      <a th:href="@{/register}" class="animated-button" th:unless="${isAuthenticated}">
+        <i class="fas fa-user-plus"></i></i> Registrar
+      </a>
+      <a th:href="@{/login}" class="animated-button" th:unless="${isAuthenticated}">
+        <i class="fas fa-sign-in-alt"></i></i> Login
+      </a>
+      <!-- Botão de Logout para Usuários Autenticados -->
+      <form th:action="@{/logout}" method="post" style="display: inline" th:if="${isAuthenticated}">
+        <button type="submit" class="animated-button">
+          <i class="fas fa-sign-out-alt"></i> Sair
+        </button>
+      </form>
     </div>
-    <!-- Rodapé -->
-    <footer>
-      <p>Desenvolvido por Maurício Stocker</p>
+    <!-- Ícone do Menu Hambúrguer -->
+    <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+  </header>
+  <!-- Menu Expandido -->
+  <div class="expanded-menu" id="expandedMenu">
+    <ul>
+      <li><a href="/games">Lista de Jogos</a></li>
+      <li th:if="${isAdmin}"><a href="/games/add">Adicionar Jogo</a></li>
+      <li th:if="${isAdmin}">
+        <a href="/admin/create-admin">Adicionar Administrador</a>
+      </li>
+      <li th:if="${isAdmin}">
+        <a href="/admin/dashboard">Dashboard de Admins</a>
+      </li>
+    </ul>
+  </div>
+  <!-- Conteúdo -->
+  <div class="content-container">
+    <section>
+      <h2>Bem-vindo ao Stocker Games</h2>
       <p>
-        <a href="https://github.com/mauriciostocker">GitHub</a> |
-        <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
+        A sua plataforma para descobrir, catalogar e avaliar os melhores
+        jogos.
       </p>
-    </footer>
-    <!-- Script para manipular o menu expandido -->
-    <script>
-      function toggleMenu() {
-        const menu = document.getElementById('expandedMenu');
-        menu.classList.toggle('active');
-      }
-    </script>
-    <!-- Font Awesome para ícones -->
-    <script
-      src="https://kit.fontawesome.com/a076d05399.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+      <!-- Botão Animado -->
+      <a href="/games" class="animated-button">
+        <i class="fas fa-gamepad"></i> Conheça nossos jogos
+      </a>
+    </section>
+    <section>
+      <h2>Funcionalidades</h2>
+      <div class="feature-card">
+        <h3>Busca de Jogos</h3>
+        <p>Encontre facilmente o seu jogo favorito digitando o nome.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Adicionar Novo Jogo</h3>
+        <p>Contribua com nossa comunidade adicionando novos jogos à lista.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Avaliações e Comentários</h3>
+        <p>
+          Veja o que outros jogadores estão dizendo e compartilhe a sua
+          experiência.
+        </p>
+      </div>
+    </section>
+  </div>
+  <!-- Rodapé -->
+  <footer>
+    <p>Desenvolvido por Maurício Stocker</p>
+    <p>
+      <a href="https://github.com/mauriciostocker">GitHub</a> |
+      <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
+    </p>
+  </footer>
+  <!-- Script para manipular o menu expandido -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('expandedMenu');
+      menu.classList.toggle('active');
+    }
+  </script>
+  <!-- Font Awesome para ícones -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+
 </html>
