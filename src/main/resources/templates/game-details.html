@@ -1,332 +1,343 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/images/mariomoreno.png">
-    <title>Detalhes do Jogo - Stocker Games</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Arial&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      /* Estilo para o vídeo de fundo */
-      .background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("/images/mariokong.png");
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            /* Garante que a imagem fique no fundo */
-        }
-      /* Camada semi-transparente para melhorar contraste */
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.6
-        ); /* Mais escuro para maior contraste */
-        z-index: 0; /* Fica acima do vídeo, mas abaixo dos elementos interativos */
-      }
-      /* Cabeçalho com barra fixa */
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-        background: rgba(
-          30,
-          30,
-          30,
-          0.9
-        ); /* Fundo mais claro para o cabeçalho */
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 2; /* Fica acima do overlay */
-      }
-      /* Logo */
-      .logo {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        border-radius: 50px; /* Bordas arredondadas para o container da logo */
-      }
-      .logo img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%; /* Torna a logo redonda */
-        object-fit: cover; /* Garante que a imagem preencha o círculo corretamente */
-      }
-      .logo h1 {
-        margin-left: 10px;
-        color: white;
-        font-size: 1.5rem;
-        margin-bottom: 0; /* Remove margem inferior para alinhamento perfeito */
-      }
-      /* Botões de navegação (Alteração para o estilo dourado) */
-      .nav-buttons {
-        display: flex;
-        gap: 10px;
-        align-items: center; /* Centraliza verticalmente */
-      }
-      .nav-button,
-      .back-button {
-        background-color: rgba(242, 182, 0, 0.8); /* Fundo dourado semi-transparente */
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 25px;
-        text-transform: uppercase;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease; /* Efeito suave */
-        text-decoration: none;
-        margin-right: 20px; /* Adiciona um espaço da margem direita */
-        display: inline-block; /* Garante que o link tenha comportamento de botão */
-      }
-      .nav-button:hover,
-      .back-button:hover {
-        background-color: rgba(242, 182, 0, 1); /* Fundo dourado mais forte ao passar o mouse */
-        transform: scale(1.05); /* Aumenta ligeiramente o botão */
-      }
-      /* Seção de conteúdo */
-      .content-container {
-        margin-top: 80px; /* Espaço para o cabeçalho fixo */
-        padding: 20px;
-        color: white; /* Texto branco para melhor contraste */
-        text-align: center;
-        position: relative;
-        z-index: 1; /* Garante que o conteúdo fique acima do overlay */
-      }
-      .content-container h1 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-      }
-      /* Card de detalhes do jogo */
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Jogo - Stocker Games</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      margin: 0;
+      font-family: "Arial", sans-serif;
+      background-color: #1a1a1a;
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: rgba(30, 30, 30, 0.9);
+      position: relative;
+      z-index: 3;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #f2b600;
+    }
+    .nav-buttons a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .background-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.5);
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2;
+    }
+    .content-container {
+      position: relative;
+      z-index: 3;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .game-detail-card {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+    .game-image {
+      width: 400px;
+      height: auto;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .game-image:hover {
+      transform: scale(1.05);
+    }
+    .image-thumbnails {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+    .image-thumbnail {
+      width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .image-thumbnail:hover {
+      transform: scale(1.1);
+    }
+    .game-details .short-description,
+    .game-details .long-description {
+      font-family: "Verdana", sans-serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #ddd;
+      margin-top: 15px;
+    }
+    .back-button {
+      background-color: rgba(242, 182, 0, 0.8);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 25px;
+      text-transform: uppercase;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin-top: 20px;
+      display: inline-block;
+    }
+    .back-button:hover {
+      background-color: rgba(242, 182, 0, 1);
+      transform: scale(1.05);
+    }
+    @media (max-width: 768px) {
       .game-detail-card {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 30px;
-        margin: 0 auto;
-        max-width: 1200px;
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.8
-        ); /* Fundo escuro semi-transparente */
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        flex-direction: column;
+        align-items: center;
       }
-      /* Imagem principal do jogo */
       .game-image {
-        width: 100%; /* Ocupa toda a largura do contêiner */
-        height: 450px; /* Altura fixa para o contêiner */
-        object-fit: cover; /* Preenche o contêiner, cortando apenas o necessário */
-        background-color: #333; /* Cor de fundo para áreas vazias */
-        border-radius: 10px;
+        width: 100%;
+        height: auto;
       }
-      /* Detalhes do jogo */
-      .game-details {
-        max-width: 600px;
-        color: #bbb;
-        text-align: left;
-      }
-      .game-details h2 {
-        font-size: 2rem;
-        color: #f2b600;
-        margin-bottom: 20px;
-      }
-      .game-details p {
-        font-size: 1rem; /* Fonte ajustada para tamanho normal */
-        line-height: 1.6;
-        margin: 10px 0;
-      }
-      .game-details strong {
-        font-weight: bold;
-        color: #f2b600; /* Cor destacada para títulos */
-      }
-      /* Lista de imagens */
-      .image-thumbnails {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-        overflow-x: auto;
-      }
-      .image-thumbnail {
-        width: 80px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: transform 0.2s ease;
-      }
-      .image-thumbnail:hover {
-        transform: scale(1.1);
-      }
-      /* Destaque para as descrições */
-      .game-details .short-description,
-      .game-details .long-description {
-        font-family: "Verdana", sans-serif;
-        font-size: 1.1rem;
-        font-style: italic;
-        color: #ddd;
-        margin-top: 15px;
-      }
-      /* Botão de volta (Alteração para o estilo dourado) */
-      .back-button {
-        background-color: rgba(242, 182, 0, 0.8); /* Fundo dourado semi-transparente */
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 25px;
-        text-transform: uppercase;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        margin-top: 20px;
-        display: inline-block;
-      }
-      .back-button:hover {
-        background-color: rgba(242, 182, 0, 1); /* Fundo dourado mais forte ao passar o mouse */
-        transform: scale(1.05);
-      }
-      /* Responsividade */
-      @media (max-width: 768px) {
-        .game-detail-card {
-          flex-direction: column;
-          align-items: center;
-        }
-        .game-image {
-          width: 100%;
-          height: auto;
-        }
-      }
-      footer {
-        background: rgba(30, 30, 30, 0.9); /* Fundo escuro semi-transparente */
-        color: white;
-        text-align: center;
-        padding: 20px 10px;
-        position: relative;
-        z-index: 2; /* Garante que o rodapé fique acima do overlay */
-        margin-top: 40px; /* Espaço entre o conteúdo e o rodapé */
-        font-size: 0.9rem;
-      }
-      footer p {
-        margin: 5px 0;
-      }
-      footer a {
-        color: #f2b600; /* Cor destacada para links */
-        text-decoration: none;
-        font-weight: bold;
-      }
-      footer a:hover {
-        text-decoration: underline;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Vídeo de Fundo -->
-    <div class="background-container">
-      <img src="background.jpg" alt="Imagem de fundo" class="background-image">
+    }
+    footer {
+      background: rgba(30, 30, 30, 0.9);
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      position: relative;
+      z-index: 2;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+    footer p {
+      margin: 5px 0;
+    }
+    footer a {
+      color: #f2b600;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+    }
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      max-height: 90%;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .prev, .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+    .prev {
+      left: 20px;
+    }
+    .next {
+      right: 20px;
+    }
+    /* Ajuste para a imagem no modal */
+    #expanded-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      margin: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Vídeo de Fundo -->
+  <div class="background-container">
+    <img src="background.jpg" alt="Imagem de fundo" class="background-image">
   </div>
-    <!-- Camada Semi-Transparente -->
-    <div class="overlay"></div>
-    <!-- Cabeçalho -->
-    <header>
-      <div class="logo">
-        <img
-          th:src="@{/images/mariomoreno.png}"
-          alt="Logo StockerGames"
-        />
-        <h1>Stocker Games</h1>
-      </div>
-      <div class="nav-buttons">
-        <a href="/" class="back-button">Voltar à Home</a>
-      </div>
-    </header>
-    <!-- Conteúdo -->
-    <div class="content-container">
-      <section>
-        <h1>Detalhes do Jogo</h1>
-        <div class="game-detail-card">
-          <!-- Imagem central do jogo -->
-          <img
-            id="mainGameImage"
-            th:src="${#lists.isEmpty(game.imgUrls) ? '' : game.imgUrls[0]}"
-            alt="Imagem do Jogo"
-            class="game-image"
-          />
-
-          <!-- Detalhes do jogo -->
-          <div class="game-details">
-            <h2 th:text="${game.title}"></h2>
-            <p><strong>Ano:</strong> <span th:text="${game.year}"></span></p>
-            <p>
-              <strong>Gênero:</strong> <span th:text="${game.genre}"></span>
-            </p>
-            <p>
-              <strong>Plataformas:</strong>
-              <span th:text="${game.platforms}"></span>
-            </p>
-            <p><strong>Nota:</strong> <span th:text="${game.score}"></span></p>
-            <!-- Descrição curta -->
-            <div class="short-description">
-              <strong>Descrição curta:</strong>
-              <p th:text="${game.shortDescription}"></p>
-            </div>
-            <!-- Descrição longa -->
-            <div class="long-description">
-              <strong>Descrição longa:</strong>
-              <p th:text="${game.longDescription}"></p>
-            </div>
-            <!-- Lista de imagens -->
-            <div class="image-thumbnails">
-              <div th:each="image : ${game.imgUrls}">
-                <img
-                  th:src="@{${image}}"
-                  alt="Imagem do jogo"
-                  class="image-thumbnail"
-                  onclick="changeMainImage(this)"
-                />
-              </div>
-            </div>
-            <a href="/" class="back-button">Voltar à Home</a>
-          </div>
-        </div>
-      </section>
+  <!-- Camada Semi-Transparente -->
+  <div class="overlay"></div>
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">
+      <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames" />
+      <h1>Stocker Games</h1>
     </div>
-    <script>
-      // Função para mudar a imagem central ao clicar na miniatura
-      function changeMainImage(thumbnail) {
-        const mainImage = document.getElementById("mainGameImage");
-        mainImage.src = thumbnail.src;
-      }
-    </script>
-    <footer>
-      <p>Desenvolvido por Maurício Stocker</p>
-      <p>
-        <a href="https://github.com/mauriciostocker">GitHub</a> |
-        <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
-      </p>
-    </footer>
-  </body>
+    <div class="nav-buttons">
+      <a href="/" class="back-button">Home</a>
+    </div>
+  </header>
+  <!-- Conteúdo -->
+  <div class="content-container">
+    <section>
+      <h1>Detalhes do Jogo</h1>
+      <div class="game-detail-card">
+        <!-- Imagem central do jogo -->
+        <img
+          id="mainGameImage"
+          th:src="${#lists.isEmpty(game.imgUrls) ? '' : game.imgUrls[0]}"
+          alt="Imagem do Jogo"
+          class="game-image"
+          onclick="openModal(this)"
+        />
+        <!-- Detalhes do jogo -->
+        <div class="game-details">
+          <h2 th:text="${game.title}"></h2>
+          <p><strong>Ano:</strong> <span th:text="${game.year}"></span></p>
+          <p><strong>Gênero:</strong> <span th:text="${game.genre}"></span></p>
+          <p><strong>Plataformas:</strong> <span th:text="${game.platforms}"></span></p>
+          <p><strong>Nota:</strong> <span th:text="${game.score}"></span></p>
+          <!-- Descrição curta -->
+          <div class="short-description">
+            <strong>Descrição curta:</strong>
+            <p th:text="${game.shortDescription}"></p>
+          </div>
+          <!-- Descrição longa -->
+          <div class="long-description">
+            <strong>Descrição longa:</strong>
+            <p th:text="${game.longDescription}"></p>
+          </div>
+          <!-- Lista de imagens -->
+          <div class="image-thumbnails">
+            <div th:each="image : ${game.imgUrls}">
+              <img
+                th:src="@{${image}}"
+                alt="Imagem do jogo"
+                class="image-thumbnail"
+                onclick="changeMainImage(this)"
+              />
+            </div>
+          </div>
+          <a href="/games" class="back-button">Voltar</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- Modal -->
+  <div id="image-modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="expanded-image">
+    <a class="prev">&#10094;</a>
+    <a class="next">&#10095;</a>
+  </div>
+  <footer>
+    <p>Desenvolvido por Maurício Stocker</p>
+    <p>
+      <a href="https://github.com/mauriciostocker">GitHub</a> |
+      <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
+    </p>
+  </footer>
+  <script>
+    // Função para mudar a imagem central ao clicar na miniatura
+    function changeMainImage(thumbnail) {
+      const mainImage = document.getElementById("mainGameImage");
+      mainImage.src = thumbnail.src;
+    }
+
+    // Função para abrir o modal
+    let currentIndex = 0;
+    function openModal(image) {
+      const modal = document.getElementById("image-modal");
+      const modalImage = document.getElementById("expanded-image");
+      const images = Array.from(document.querySelectorAll(".image-thumbnail"));
+      currentIndex = images.findIndex(img => img.src === image.src);
+      
+      // Usar a URL da imagem original
+      modalImage.src = image.src;
+      
+      modal.style.display = "block";
+
+      // Fechar o modal ao clicar fora
+      modal.onclick = (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+    }
+
+    // Navegação entre imagens
+    document.querySelector(".prev").onclick = () => {
+      const images = Array.from(document.querySelectorAll(".image-thumbnail"));
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      document.getElementById("expanded-image").src = images[currentIndex].src;
+    };
+
+    document.querySelector(".next").onclick = () => {
+      const images = Array.from(document.querySelectorAll(".image-thumbnail"));
+      currentIndex = (currentIndex + 1) % images.length;
+      document.getElementById("expanded-image").src = images[currentIndex].src;
+    };
+
+    // Fechar o modal ao clicar no botão de fechar
+    document.querySelector(".close").onclick = () => {
+      document.getElementById("image-modal").style.display = "none";
+    };
+  </script>
+</body>
 </html>

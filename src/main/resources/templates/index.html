@@ -1,367 +1,463 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/png" href="/images/mariomoreno.png">
-        <title>Lista de Jogos - Stocker Games</title>
-        <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
-        <style>
-            /* Estilo para o vídeo de fundo */
-            .background-image {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image: url("/images/mariokong.png");
-                background-size: cover;
-                background-position: center;
-                z-index: -1;
-                /* Garante que a imagem fique no fundo */
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/mariomoreno.png">
+    <title>Lista de Jogos - Stocker Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo para o vídeo de fundo */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("/images/mariokong.png");
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            /* Garante que a imagem fique no fundo */
+        }
+
+        /* Camada semi-transparente para melhorar contraste */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Mais escuro para maior contraste */
+            z-index: 0;
+            /* Fica acima do vídeo, mas abaixo dos elementos interativos */
+        }
+
+        /* Container principal da página */
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Garante que a página tenha pelo menos a altura da tela */
+        }
+
+        /* Cabeçalho com barra fixa */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(30, 30, 30, 0.9);
+            /* Fundo mais claro para o cabeçalho */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            /* Fica acima do overlay */
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 50px;
+            /* Bordas arredondadas para o container da logo */
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            /* Torna a logo redonda */
+            object-fit: cover;
+            /* Garante que a imagem preencha o círculo corretamente */
+        }
+
+        .logo h1 {
+            margin-left: 10px;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            /* Remove margem inferior para alinhamento perfeito */
+        }
+
+        /* Botões de navegação (alterado para o novo padrão) */
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            /* Centraliza verticalmente */
+        }
+
+        .nav-button,
+        .login-button,
+        .back-button {
+            background-color: rgba(242, 182, 0, 0.8);
+            /* Dourado */
+            /* Fundo dourado semi-transparente */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 25px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            /* Efeito suave */
+            text-decoration: none;
+            margin-right: 20px;
+            /* Adiciona um espaço da margem direita */
+            display: inline-block;
+            /* Garante que o link tenha comportamento de botão */
+        }
+
+        .nav-button:hover,
+        .login-button:hover,
+        .back-button:hover {
+            background-color: rgba(242, 182, 0, 1);
+            /* Fundo mais forte ao passar o mouse */
+            /* Aumenta a intensidade do dourado */
+            transform: scale(1.05);
+            /* Aumenta ligeiramente o botão */
+        }
+
+        /* Seção de conteúdo */
+        .content-container {
+            flex: 1;
+            /* O conteúdo cresce para empurrar o rodapé para baixo */
+            margin-top: 80px;
+            /* Espaço para o cabeçalho fixo */
+            padding: 20px;
+            color: white;
+            /* Texto branco para melhor contraste */
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            /* Garante que o conteúdo fique acima do overlay */
+        }
+
+        .content-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .content-container p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* Formulário de Busca */
+        .search-form {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .search-form input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Fundo semi-transparente */
+            color: black;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .search-form button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Lista de Jogos */
+        .game-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            justify-items: center;
+            padding: 20px;
+        }
+
+        /* Card de Jogo */
+        .game-item {
+            background-color: rgba(0, 0, 0, 0.8);
+            /* Fundo escuro semi-transparente */
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 320px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .game-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Títulos dos cards */
+        .game-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            margin-top: 10px;
+            color: #f2b600;
+        }
+
+        /* Descrição no card */
+        .game-item p {
+            font-size: 1rem;
+            color: white;
+            margin-top: 5px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        /* Imagem do jogo */
+        .game-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Links */
+        .game-item a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .game-item a:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Rodapé */
+        footer {
+            background: rgba(30, 30, 30, 0.9);
+            /* Fundo escuro semi-transparente */
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #f2b600;
+            /* Cor destacada para links */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Filtros */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filters select,
+        .filters input {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+        }
+
+        .filters button {
+            padding: 10px 15px;
+            background-color: rgba(242, 182, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .filters button:hover {
+            background-color: rgba(242, 182, 0, 1);
+            transform: scale(1.05);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .game-list {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
 
-            /* Camada semi-transparente para melhorar contraste */
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.6);
-                /* Mais escuro para maior contraste */
-                z-index: 0;
-                /* Fica acima do vídeo, mas abaixo dos elementos interativos */
-            }
-
-            /* Container principal da página */
-            .page-container {
-                display: flex;
-                flex-direction: column;
-                min-height: 100vh;
-                /* Garante que a página tenha pelo menos a altura da tela */
-            }
-
-            /* Cabeçalho com barra fixa */
-            header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-                background: rgba(30, 30, 30, 0.9);
-                /* Fundo mais claro para o cabeçalho */
-                position: fixed;
-                width: 100%;
-                top: 0;
-                left: 0;
-                z-index: 2;
-                /* Fica acima do overlay */
-            }
-
-            /* Logo */
-            .logo {
-                display: flex;
-                align-items: center;
-                padding: 10px;
-                border-radius: 50px;
-                /* Bordas arredondadas para o container da logo */
-            }
-
-            .logo img {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                /* Torna a logo redonda */
-                object-fit: cover;
-                /* Garante que a imagem preencha o círculo corretamente */
-            }
-
-            .logo h1 {
-                margin-left: 10px;
-                color: white;
-                font-size: 1.5rem;
-                margin-bottom: 0;
-                /* Remove margem inferior para alinhamento perfeito */
-            }
-
-            /* Botões de navegação (alterado para o novo padrão) */
             .nav-buttons {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                /* Centraliza verticalmente */
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .nav-button,
-            .login-button,
             .back-button {
-                background-color: rgba(242, 182, 0, 0.8); /* Dourado */
-                /* Fundo dourado semi-transparente */
-                color: white;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 25px;
-                text-transform: uppercase;
-                font-weight: bold;
-                cursor: pointer;
-                transition: background-color 0.3s ease, transform 0.3s ease;
-                /* Efeito suave */
-                text-decoration: none;
-                margin-right: 20px;
-                /* Adiciona um espaço da margem direita */
-                display: inline-block;
-                /* Garante que o link tenha comportamento de botão */
+                width: 100%;
+                margin: 5px 0;
             }
+        }
 
-            .nav-button:hover,
-            .login-button:hover,
-            .back-button:hover {
-                background-color: rgba(242, 182, 0, 1); /* Fundo mais forte ao passar o mouse */
-                /* Aumenta a intensidade do dourado */
-                transform: scale(1.05);
-                /* Aumenta ligeiramente o botão */
-            }
-
-            /* Seção de conteúdo */
-            .content-container {
-                flex: 1;
-                /* O conteúdo cresce para empurrar o rodapé para baixo */
-                margin-top: 80px;
-                /* Espaço para o cabeçalho fixo */
-                padding: 20px;
-                color: white;
-                /* Texto branco para melhor contraste */
-                text-align: center;
-                position: relative;
-                z-index: 1;
-                /* Garante que o conteúdo fique acima do overlay */
+        @media (max-width: 480px) {
+            .game-list {
+                grid-template-columns: 1fr;
             }
 
             .content-container h1 {
-                font-size: 2.5rem;
-                margin-bottom: 20px;
+                font-size: 2rem;
             }
 
             .content-container p {
-                font-size: 1.2rem;
-                margin-bottom: 30px;
-            }
-
-            /* Formulário de Busca */
-            .search-form {
-                margin-top: 2rem;
-                margin-bottom: 2rem;
-                text-align: center;
-            }
-
-            .search-form input[type="text"] {
-                padding: 10px;
                 font-size: 1rem;
-                width: 80%;
-                max-width: 300px;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                background-color: rgba(255, 255, 255, 0.8);
-                /* Fundo semi-transparente */
-                color: black;
             }
+        }
+    </style>
+</head>
 
-            .search-form button {
-                padding: 10px 20px;
-                background-color: rgba(0, 0, 0, 0.8);
-                color: white;
-                border: none;
-                border-radius: 25px;
-                font-size: 1rem;
-                cursor: pointer;
-                margin-left: 10px;
-            }
-
-            .search-form button:hover {
-                background-color: rgba(0, 0, 0, 0.9);
-                transform: scale(1.05);
-            }
-
-            /* Lista de Jogos */
-            .game-list {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 2rem;
-                justify-items: center;
-                padding: 20px;
-            }
-
-            /* Card de Jogo */
-            .game-item {
-                background-color: rgba(0, 0, 0, 0.8);
-                /* Fundo escuro semi-transparente */
-                border-radius: 12px;
-                padding: 20px;
-                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-                text-align: center;
-                width: 100%;
-                max-width: 320px;
-                transition: transform 0.3s ease-in-out;
-            }
-
-            .game-item:hover {
-                transform: scale(1.05);
-            }
-
-            /* Títulos dos cards */
-            .game-item h3 {
-                font-family: 'Poppins', sans-serif;
-                font-size: 1.8rem;
-                margin-top: 10px;
-                color: #f2b600;
-            }
-
-            /* Descrição no card */
-            .game-item p {
-                font-size: 1rem;
-                color: white;
-                margin-top: 5px;
-                line-height: 1.6;
-                text-align: justify;
-            }
-
-            /* Imagem do jogo */
-            .game-image {
-                width: 100%;
-                height: auto;
-                border-radius: 8px;
-            }
-
-            /* Links */
-            .game-item a {
-                display: inline-block;
-                margin-top: 10px;
-                padding: 8px 12px;
-                background-color: rgba(0, 0, 0, 0.8);
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                transition: background-color 0.3s ease, transform 0.3s ease;
-            }
-
-            .game-item a:hover {
-                background-color: rgba(0, 0, 0, 0.9);
-                transform: scale(1.05);
-            }
-
-            /* Rodapé */
-            footer {
-                background: rgba(30, 30, 30, 0.9);
-                /* Fundo escuro semi-transparente */
-                color: white;
-                text-align: center;
-                padding: 20px 10px;
-                font-size: 0.9rem;
-            }
-
-            footer p {
-                margin: 5px 0;
-            }
-
-            footer a {
-                color: #f2b600;
-                /* Cor destacada para links */
-                text-decoration: none;
-                font-weight: bold;
-            }
-
-            footer a:hover {
-                text-decoration: underline;
-            }
-
-            /* Responsividade */
-            @media (max-width: 768px) {
-                .game-list {
-                    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                }
-
-                .nav-buttons {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-
-                .nav-button,
-                .back-button {
-                    width: 100%;
-                    margin: 5px 0;
-                }
-            }
-
-            @media (max-width: 480px) {
-                .game-list {
-                    grid-template-columns: 1fr;
-                }
-
-                .content-container h1 {
-                    font-size: 2rem;
-                }
-
-                .content-container p {
-                    font-size: 1rem;
-                }
-            }
-        </style>
-    </head>
-
-    <body class="page-container">
-        <div class="background-container">
-            <img src="background.jpg" alt="Imagem de fundo" class="background-image">
+<body class="page-container">
+    <div class="background-container">
+        <img src="background.jpg" alt="Imagem de fundo" class="background-image">
+    </div>
+    <!-- Camada Semi-Transparente -->
+    <div class="overlay"></div>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="logo">
+            <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames">
+            <h1>Stocker Games</h1>
         </div>
-        <!-- Camada Semi-Transparente -->
-        <div class="overlay"></div>
-        <!-- Cabeçalho -->
-        <header>
-            <div class="logo">
-                <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames">
-                <h1>Stocker Games</h1>
-            </div>
-            <div class="nav-buttons">
-                <a href="/" class="back-button">Voltar à Home</a>
-            </div>
-        </header>
-        <!-- Conteúdo -->
-        <div class="content-container">
-            <section>
-                <h1>Lista de Jogos</h1>
-                <!-- Formulário de Busca -->
-                <div class="search-form">
-                    <form th:action="@{/games/searchByName}" method="get">
-                        <input type="text" name="title" placeholder="Buscar por Nome do Jogo">
-                        <button type="submit">Buscar</button>
-                    </form>
-                </div>
-                <!-- Mensagem de Alerta -->
-                <div th:if="${message}"
-                    style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
-                    <p th:utext="${message}"></p>
-                </div>
-                <!-- Lista de Jogos -->
-                <div class="game-list">
-                    <div th:each="game : ${games}" class="game-item">
-                        <a th:href="@{/games/{id}(id=${game.id})}">
-                            <img th:src="@{${game.imgUrl}}" th:alt="${game.title}" class="game-image">
-                            <h3 th:text="${game.title}"></h3>
-                            <p th:text="${game.shortDescription}"></p>
-                            <span>Ver Detalhes</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
+        <div class="nav-buttons">
+            <a href="/" class="back-button">Home</a>
         </div>
-        <!-- Rodapé -->
-        <footer>
-            <p>Desenvolvido por Maurício Stocker</p>
-            <p>
-              <a href="https://github.com/mauriciostocker">GitHub</a> |
-              <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
-            </p>
-          </footer>
-    </body>
+    </header>
+    <!-- Conteúdo -->
+    <div class="content-container">
+        <section>
+            <h1>Lista de Jogos</h1>
+            <!-- Formulário de Busca -->
+            <div class="search-form">
+                <form th:action="@{/games/searchByName}" method="get">
+                    <input type="text" name="title" placeholder="Buscar por Nome do Jogo">
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+            <!-- Filtros -->
+            <div class="filters">
+                <form id="filterForm" action="/games/filter" method="GET">
+                    <!-- Gênero -->
+                    <select name="genre">
+                        <option value="">Selecione um gênero</option>
+                        <option value="Ação">Ação</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="RPG">RPG</option>
+                        <option value="Esportes">Esportes</option>
+                        <option value="Estratégia">Estratégia</option>
+                        <option value="Simulação">Simulação</option>
+                    </select>
+
+                    <!-- Plataforma -->
+                    <select name="platform">
+                        <option value="">Selecione uma Plataforma</option>
+                        <option value="PC">PC</option>
+                        <option value="PS5">PS5</option>
+                        <option value="Xbox Series X">Xbox Series X</option>
+                        <option value="Nintendo Switch">Nintendo Switch</option>
+                    </select>
+
+                    <!-- Ano -->
+                    <select name="year">
+                        <option value="">Selecione um Ano</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                    </select>
+
+                    <!-- Botão Filtrar -->
+                    <button type="submit">Filtrar</button>
+
+                    <!-- Botão Limpar Filtros -->
+                    <button type="button" onclick="clearFilters()">Limpar Filtros</button>
+                </form>
+            </div>
+            <!-- Mensagem de Alerta -->
+            <div th:if="${message}"
+                style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                <p th:utext="${message}"></p>
+            </div>
+            <!-- Lista de Jogos -->
+            <div class="game-list">
+                <div th:each="game : ${games}" class="game-item">
+                    <a th:href="@{/games/{id}(id=${game.id})}">
+                        <img th:src="@{${game.imgUrl}}" th:alt="${game.title}" class="game-image">
+                        <h3 th:text="${game.title}"></h3>
+                        <p th:text="${game.shortDescription}"></p>
+                        <span>Detalhes</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Rodapé -->
+    <footer>
+        <p>Desenvolvido por Maurício Stocker</p>
+        <p>
+            <a href="https://github.com/mauriciostocker">GitHub</a> |
+            <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
+        </p>
+    </footer>
+    <script>
+        function clearFilters() {
+            // Reseta o formulário
+            document.getElementById("filterForm").reset();
+
+            // Redireciona para a página inicial (ou remove os filtros)
+            window.location.href = "/games";
+        }
+    </script>
+</body>
 
 </html>

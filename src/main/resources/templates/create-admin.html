@@ -73,12 +73,12 @@
             <input type="text" name="nome" placeholder="Nome" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="senha" placeholder="Senha" required>
-            <button type="submit">Cadastrar Administrador</button>
+            <button type="submit">Cadastrar</button>
         </form>
         <div class="message" th:if="${successMessage}" th:text="${successMessage}"></div>
         <div class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
         <!-- Botão Voltar -->
-        <a th:href="@{/}" class="back-button">Voltar para Home</a>
+        <a th:href="@{/}" class="back-button">Home</a>
     </div>
 </body>
 </html>

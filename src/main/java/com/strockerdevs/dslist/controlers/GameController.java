@@ -110,4 +110,25 @@ public class GameController {
                                                                          // imagem não principal
         return ResponseEntity.status(HttpStatus.CREATED).body(savedImage); // Retorna a imagem salva
     }
+    @GetMapping("/games/filter")
+    public String filterGames(
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String platform,
+            @RequestParam(required = false) Integer year,
+            Model model) {
+
+        // Chama o serviço para buscar jogos com base nos filtros
+        List<GameMinDTO> games = gameService.findByFilters(genre, platform, year);
+
+        // Adiciona os jogos filtrados ao modelo
+        model.addAttribute("games", games);
+
+        // Verifica se nenhum jogo foi encontrado
+        if (games.isEmpty()) {
+            model.addAttribute("message", "Nenhum jogo encontrado com os filtros selecionados.");
+        }
+
+        // Retorna a view inicial
+        return "index";
+    }
 }

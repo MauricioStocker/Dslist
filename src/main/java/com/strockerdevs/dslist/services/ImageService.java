@@ -38,40 +38,45 @@ public class ImageService {
     public Image saveImage(Long gameId, MultipartFile imageFile, boolean isMain) throws IOException {
         logger.info("Iniciando o salvamento da imagem para o jogo ID: {}", gameId);
 
-        // 1. Verificar se o jogo existe
+        // 1. Validar o tipo de arquivo
+        String contentType = imageFile.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IllegalArgumentException("Apenas arquivos de imagem são permitidos.");
+        }
+
+        // 2. Validar o tamanho do arquivo (exemplo: 5MB)
+        long maxSize = 5 * 1024 * 1024; // 5MB
+        if (imageFile.getSize() > maxSize) {
+            throw new IllegalArgumentException("O tamanho máximo permitido para a imagem é 5MB.");
+        }
+
+        // 3. Verificar se o jogo existe
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new RuntimeException("Jogo não encontrado"));
 
-        // 2. Enviar a imagem para o Cloudinary e obter a URL
+        // 4. Enviar a imagem para o Cloudinary e obter a URL
         String imageUrl = cloudinaryService.uploadImage(imageFile);
         logger.info("Imagem enviada para Cloudinary com sucesso: {}", imageUrl);
 
-        // 3. Verificar se este jogo já tem imagens cadastradas
+        // 5. Verificar se este jogo já tem imagens cadastradas
         Optional<Image> firstImage = imageRepository.findFirstByGameId(gameId);
-
         if (firstImage.isPresent()) {
-            // Caso já exista uma imagem para o jogo, definir a nova como principal apenas
-            // se for solicitado
             if (isMain) {
                 imageRepository.updateIsMainFalseByGameId(gameId);
                 logger.info("Nova imagem principal definida para o jogo ID: {}", gameId);
             }
         } else {
-            // Se for a primeira imagem do jogo, **independente da imagem existir para
-            // outros jogos**, ela será principal
             isMain = true;
             logger.info("Primeira imagem cadastrada para o jogo ID: {}. Marcada como principal.", gameId);
         }
 
-        // 4. Criar e salvar a imagem associada ao jogo
+        // 6. Criar e salvar a imagem associada ao jogo
         Image image = new Image();
         image.setUrl(imageUrl);
         image.setGame(game);
         image.setMain(isMain);
-
         imageRepository.save(image);
         logger.info("Imagem salva com sucesso no jogo ID: {}. URL: {}", gameId, imageUrl);
-
         return image;
     }
 

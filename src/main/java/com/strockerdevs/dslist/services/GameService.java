@@ -20,7 +20,8 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
 
-    @Autowired ImageService imageService;
+    @Autowired
+    ImageService imageService;
 
     @Transactional
     public Game saveGameWithImages(GameDTO gameDto, List<MultipartFile> imageFiles) throws IOException {
@@ -40,13 +41,11 @@ public class GameService {
         // Salvar as imagens utilizando o ImageService
         for (MultipartFile imageFile : imageFiles) {
             // Aqui o ImageService cuida do upload da imagem e da persistência
-            imageService.saveImage(game.getId(), imageFile, false);  // O false indica que a imagem não é principal
+            imageService.saveImage(game.getId(), imageFile, false); // O false indica que a imagem não é principal
         }
 
         return game;
     }
-
-
 
     @Transactional(readOnly = true)
     public GameDTO findById(Long id) {
@@ -67,17 +66,23 @@ public class GameService {
     }
 
     @Transactional(readOnly = true)
-public GameDTO findByIdWithImages(Long id) {
-    Game result = gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game not found"));
-    GameDTO dto = new GameDTO(result);
+    public GameDTO findByIdWithImages(Long id) {
+        Game result = gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game not found"));
+        GameDTO dto = new GameDTO(result);
 
-    // Adicionando as URLs das imagens no DTO
-    List<String> imageUrls = result.getImages().stream()
-                                    .map(Image::getUrl)
-                                    .collect(Collectors.toList());
-    dto.setImgUrls(imageUrls);  // Supondo que você tenha um campo imageUrls no DTO
+        // Adicionando as URLs das imagens no DTO
+        List<String> imageUrls = result.getImages().stream()
+                .map(Image::getUrl)
+                .collect(Collectors.toList());
+        dto.setImgUrls(imageUrls); // Supondo que você tenha um campo imageUrls no DTO
 
-    return dto;
-}
+        return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByFilters(String genre, String platform, Integer year) {
+        List<Game> result = gameRepository.findByFilters(genre, platform, year);
+        return result.stream().map(GameMinDTO::new).toList();
+    }
 
 }
