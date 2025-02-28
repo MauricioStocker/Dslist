@@ -41,5 +41,9 @@ public class PessoaService {
     public Optional<Pessoa> findByEmail(String email) {
         return pessoaRepository.findByEmail(email);
     }
-}
 
+    // Novo método para listar todos os usuários
+    public List<Pessoa> listAllUsers() {
+        return pessoaRepository.findByRole(Pessoa.Role.USER);
+    }
+}

@@ -56,4 +56,12 @@ public class AdminController {
         }
         return "redirect:/admin/dashboard";
     }
+
+    @GetMapping("/admin/user-dashboard")
+    public String userDashboard(Model model) {
+        // Buscar todos os usuários com role USER
+        List<Pessoa> users = pessoaService.listAllUsers();
+        model.addAttribute("users", users);
+        return "user-dashboard";
+    }
 }
