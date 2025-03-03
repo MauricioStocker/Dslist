@@ -2,19 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Referência ao Favicon -->
   <link rel="icon" type="image/png" href="/images/mariomoreno.png" />
   <title>Home - Stocker Games</title>
   <!-- Google tag (gtag.js) -->
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ER4FGG7H2X"></script>
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-ER4FGG7H2X');
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-ER4FGG7H2X");
   </script>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
@@ -208,7 +215,7 @@
       min-height: 80vh;
     }
 
-    .content-container h2 {
+    .content-container h1 {
       font-size: 2.5rem;
       margin-bottom: 20px;
     }
@@ -218,7 +225,7 @@
       margin-bottom: 30px;
     }
 
-    /* Cards de Funcionalidades */
+    /* Seção de Funcionalidades */
     .feature-card {
       background-color: rgba(0, 0, 0, 0.8);
       padding: 20px;
@@ -239,50 +246,166 @@
       font-size: 1rem;
     }
 
-    /* Rodapé */
-    footer {
-      background: rgba(30, 30, 30, 0.9);
-      color: white;
-      text-align: center;
-      padding: 20px 10px;
+    /* Nova Seção: Formulário de Contato, Mapa e WhatsApp */
+    .contact-section {
+      display: flex;
+      flex-direction: column;
+      /* Alterado para coluna para melhor organização */
+      align-items: center;
+      /* Centraliza os elementos horizontalmente */
+      gap: 20px;
+      /* Espaçamento entre os elementos */
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
       position: relative;
-      z-index: 2;
-      margin-top: 40px;
-      font-size: 0.9rem;
+      z-index: 1;
     }
 
-    footer p {
-      margin: 5px 0;
+    .whatsapp-button-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      /* Garante que o botão fique acima de outros elementos */
     }
+
+    .whatsapp-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #25d366;
+      /* Cor do WhatsApp */
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .whatsapp-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .whatsapp-icon i {
+      margin-right: 8px;
+    }
+
+    .map-container {
+      width: 100%;
+      /* Ocupa toda a largura disponível */
+      max-width: 800px;
+      /* Limita a largura máxima */
+      height: 400px;
+      /* Altura fixa para o mapa */
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* Sombra para destacar o mapa */
+    }
+
+    .contact-form-container {
+      width: 100%;
+      max-width: 600px;
+      /* Limita a largura máxima do formulário */
+      text-align: left;
+    }
+
+    .contact-form-container h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .contact-form-container input,
+    .contact-form-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .contact-form-container button {
+      margin-top: 10px;
+      background-color: #007bff;
+      /* Azul padrão */
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .contact-form-container button:hover {
+      background-color: #0056b3;
+      /* Azul escuro ao passar o mouse */
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .contact-section {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .map-container {
+        height: 300px;
+        /* Reduz a altura do mapa em telas menores */
+      }
+
+      .contact-form-container {
+        max-width: 100%;
+        /* Ocupa toda a largura disponível */
+      }
+    }
+
+    /* Rodapé */
+    /* Estilo para o Rodapé */
+    footer {
+      background-color: #333;
+      /* Cor de fundo escuro */
+      color: white;
+      /* Cor do texto */
+      text-align: center;
+      /* Centraliza o texto */
+      padding: 20px 10px;
+      /* Espaçamento interno */
+      margin-top: 20px;
+      /* Adiciona espaço entre o conteúdo e o rodapé */
+      position: relative;
+      /* Remove o posicionamento fixo */
+      width: 100%;
+      /* Ocupa 100% da largura */
+    }
+
 
     footer a {
       color: #f2b600;
+      /* Cor destacada para links */
       text-decoration: none;
       font-weight: bold;
     }
 
     footer a:hover {
       text-decoration: underline;
-    }
-
-    /* Responsividade */
-    @media (max-width: 768px) {
-      .menu-icon {
-        display: block;
-      }
-
-      .expanded-menu {
-        left: 10px;
-      }
+      /* Adiciona sublinhado ao passar o mouse */
     }
   </style>
 </head>
 
 <body>
-  <!-- Imagem de Fundo -->
+  <!-- Imagem de Fundo e Camada Semi-Transparente -->
   <div class="background-image"></div>
-  <!-- Camada Semi-Transparente -->
   <div class="overlay"></div>
+
   <!-- Cabeçalho -->
   <header>
     <div class="logo">
@@ -311,6 +434,7 @@
     <!-- Ícone do Menu Hambúrguer -->
     <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
   </header>
+
   <!-- Menu Expandido -->
   <div class="expanded-menu" id="expandedMenu">
     <ul>
@@ -325,9 +449,13 @@
       <li th:if="${isAdmin}">
         <a href="/admin/user-dashboard">Dashboard de Usuários</a>
       </li>
+      <li th:if="${isAdmin}">
+        <a href="/admin/emails">Dashboard de E-mails</a>
+      </li>
     </ul>
   </div>
-  <!-- Conteúdo -->
+
+  <!-- Conteúdo Principal -->
   <div class="content-container">
     <section>
       <h2>Bem-vindo ao Stocker Games</h2>
@@ -359,23 +487,94 @@
       </div>
     </section>
   </div>
-  <!-- Rodapé -->
-  <footer>
-    <p>Desenvolvido por Maurício Stocker</p>
-    <p>
-      <a href="https://github.com/mauriciostocker">GitHub</a> |
-      <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
-    </p>
-  </footer>
-  <!-- Script para manipular o menu expandido -->
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('expandedMenu');
-      menu.classList.toggle('active');
-    }
-  </script>
-  <!-- Font Awesome para ícones -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Nova Seção: Formulário de Contato, Mapa e WhatsApp -->
+  <div class="contact-section">
+
+    <!-- Botão do WhatsApp -->
+    <div class="whatsapp-button-container">
+      <a href="https://wa.me/41995430914?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20os%20serviços%20da%20Stocker%20Games."
+        target="_blank" class="whatsapp-icon animated-button" title="Converse conosco pelo WhatsApp">
+        <i class="fab fa-whatsapp"></i> <!-- Ícone do WhatsApp -->
+        <span>Converse conosco pelo WhatsApp</span>
+      </a>
+    </div>
+
+    <!-- Mapa -->
+    <div class="map-container">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.5849725450707!2d-49.3729650247741!3d-25.618703877441956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dd01e714fa43c9%3A0x73e699ff52bf6fb!2sR.%20Calistemon%20-%20Campina%20da%20Barra%2C%20Arauc%C3%A1ria%20-%20PR%2C%2083709-510!5e0!3m2!1spt-BR!2sbr!4v1740930649682!5m2!1spt-BR!2sbr"
+        width="100%" height="450px" style="border: 0" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade" title="Localização da Stocker Games">
+      </iframe>
+    </div>
+
+    <!-- Formulário de Contato -->
+    <div class="contact-form-container">
+      <h3>Entre em Contato</h3>
+      <form id="contactForm">
+        <input type="text" id="name" name="name" placeholder="Seu nome" required />
+        <input type="email" id="from" name="from" placeholder="Seu e-mail" required />
+        <input type="text" id="subject" name="subject" placeholder="Assunto" required />
+        <textarea id="text" name="text" placeholder="Sua mensagem" rows="5" required></textarea>
+        <button type="submit" class="animated-button">
+          <i class="fas fa-paper-plane"></i> Enviar Mensagem
+        </button>
+      </form>
+
+      <div id="message" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+
+    <script>
+      document.getElementById('contactForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const from = document.getElementById('from').value;
+        const subject = document.getElementById('subject').value;
+        const text = document.getElementById('text').value;
+
+        fetch(`/send-email?name=${encodeURIComponent(name)}&from=${encodeURIComponent(from)}&subject=${encodeURIComponent(subject)}&text=${encodeURIComponent(text)}`)
+          .then(response => response.text())
+          .then(message => {
+            document.getElementById('message').innerText = message;
+            document.getElementById('message').style.color = message.includes('sucesso') ? 'green' : 'red';
+
+            // Se a mensagem indicar sucesso, limpa o formulário
+            if (message.includes('sucesso')) {
+              document.getElementById('contactForm').reset();
+            }
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            document.getElementById('message').innerText = 'Erro ao enviar o email. Por favor, tente novamente.';
+            document.getElementById('message').style.color = 'red';
+          });
+      });
+    </script>
+
+
+    <!-- Rodapé -->
+    <footer>
+      <p>Desenvolvido por Maurício Stocker</p>
+      <p>
+        <a href="https://github.com/mauriciostocker" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a> |
+        <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/" title="LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </p>
+    </footer>
+
+    <!-- Script para Alternar Menu Expandido -->
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("expandedMenu");
+        menu.classList.toggle("active");
+      }
+    </script>
+  </div>
 </body>
 
 </html>

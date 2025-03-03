@@ -1,0 +1,8 @@
+<!-- fragments.html (ou game-list.html) -->
+<div th:each="game : ${games}">
+    <div class="game-item">
+        <img th:src="${game.imgUrl}" alt="Imagem do jogo">
+        <h3 th:text="${game.title}"></h3>
+        <a th:href="@{/games/{id}(id=${game.id})}">Ver Detalhes</a>
+    </div>
+</div>

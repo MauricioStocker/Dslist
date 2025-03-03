@@ -1,8 +1,9 @@
 package com.strockerdevs.dslist.controlers;
 
+import com.strockerdevs.dslist.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,15 +12,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmailTestController {
 
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailService emailService;
 
     @GetMapping("/send-email")
-    public String sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
-        return "Email enviado com sucesso!";
+    public ResponseEntity<String> sendEmail(
+            @RequestParam String name,
+            @RequestParam String from,
+            @RequestParam String subject,
+            @RequestParam String text) {
+        if (name == null || name.isEmpty() ||
+                from == null || from.isEmpty() ||
+                subject == null || subject.isEmpty() ||
+                text == null || text.isEmpty()) {
+            return ResponseEntity.badRequest().body("Todos os campos são obrigatórios.");
+        }
+
+        try {
+            String siteEmail = "stocker.caicara@gmail.com";
+            String fullMessage = "Mensagem enviada por: " + name + " (" + from + ")\n\n" + text;
+
+            emailService.sendEmail(siteEmail, subject, fullMessage, name, from);
+            return ResponseEntity.ok("E-mail enviado com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao enviar o e-mail. Por favor, tente novamente.");
+        }
     }
 }

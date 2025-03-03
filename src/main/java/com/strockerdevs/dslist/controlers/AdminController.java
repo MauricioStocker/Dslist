@@ -1,6 +1,8 @@
 package com.strockerdevs.dslist.controlers;
 
 import com.strockerdevs.dslist.entities.Pessoa;
+import com.strockerdevs.dslist.entities.SentEmail;
+import com.strockerdevs.dslist.services.EmailService;
 import com.strockerdevs.dslist.services.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ public class AdminController {
 
     @Autowired
     private PessoaService pessoaService;
+    @Autowired
+    private EmailService emailService;
 
     // Exibir a página de cadastro de administradores
     @GetMapping("/admin/create-admin")
@@ -63,5 +67,12 @@ public class AdminController {
         List<Pessoa> users = pessoaService.listAllUsers();
         model.addAttribute("users", users);
         return "user-dashboard";
+    }
+
+    @GetMapping("/admin/emails")
+    public String showSentEmails(Model model) {
+        List<SentEmail> sentEmails = emailService.getAllSentEmails();
+        model.addAttribute("sentEmails", sentEmails);
+        return "sent-emails"; // Nome da view Thymeleaf
     }
 }

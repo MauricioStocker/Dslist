@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>E-mails Enviados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #333;
+            color: white;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>E-mails Enviados</h1>
+    <a th:href="@{/}" class="back-button">Voltar ao Dashboard</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Remetente</th>
+                <th>Destinatário</th>
+                <th>Assunto</th>
+                <th>Data de Envio</th>
+                <th>Mensagem</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="email : ${sentEmails}">
+                <td th:text="${email.id}"></td>
+                <td th:text="${email.fromEmail}"></td> <!-- Alterado aqui -->
+                <td th:text="${email.toEmail}"></td>
+                <td th:text="${email.subject}"></td>
+                <td th:text="${#temporals.format(email.sentAt, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${email.text}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

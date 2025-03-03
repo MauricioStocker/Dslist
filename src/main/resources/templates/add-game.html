@@ -1,242 +1,258 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/images/mariomoreno.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/images/mariomoreno.png" />
     <title>Adicionar Jogo - Stocker Games</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arial&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        /* Estilo para o vídeo de fundo */
-        .background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("/images/mariokong.png");
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            /* Garante que a imagem fique no fundo */
-        }
+      /* Estilo para o vídeo de fundo */
+      .background-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("/images/mariokong.png");
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+        /* Garante que a imagem fique no fundo */
+      }
 
-        .background-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+      .background-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-        /* Camada semi-transparente para melhorar contraste */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            /* Mais escuro para maior contraste */
-            z-index: 0;
-            /* Fica acima do vídeo, mas abaixo dos elementos interativos */
-        }
+      /* Camada semi-transparente para melhorar contraste */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        /* Mais escuro para maior contraste */
+        z-index: 0;
+        /* Fica acima do vídeo, mas abaixo dos elementos interativos */
+      }
 
-        /* Cabeçalho com barra fixa */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background: rgba(30, 30, 30, 0.9);
-            /* Fundo mais claro para o cabeçalho */
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 2;
-            /* Fica acima do overlay */
-        }
+      /* Cabeçalho com barra fixa */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: rgba(30, 30, 30, 0.9);
+        /* Fundo mais claro para o cabeçalho */
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        /* Fica acima do overlay */
+      }
 
-        /* Logo */
-        .logo {
-            display: flex;
-            align-items: center;
-        }
+      /* Logo */
+      .logo {
+        display: flex;
+        align-items: center;
+      }
 
-        .logo img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            /* Torna a logo redonda */
-            object-fit: cover;
-            /* Garante que a imagem preencha o círculo corretamente */
-        }
+      .logo img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        /* Torna a logo redonda */
+        object-fit: cover;
+        /* Garante que a imagem preencha o círculo corretamente */
+      }
 
-        .logo h1 {
-            margin-left: 10px;
-            color: #f2b600;
-            /* Amarelo dourado */
-            font-size: 1.5rem;
-            margin-bottom: 0;
-            /* Remove margem inferior para alinhamento perfeito */
-        }
+      .logo h1 {
+        margin-left: 10px;
+        color: #f2b600;
+        /* Amarelo dourado */
+        font-size: 1.5rem;
+        margin-bottom: 0;
+        /* Remove margem inferior para alinhamento perfeito */
+      }
 
-        /* Botões de navegação */
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            /* Centraliza verticalmente */
-        }
+      /* Botões de navegação */
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        /* Centraliza verticalmente */
+      }
 
-        .back-button {
-            background-color: #f2b600;
-            /* Amarelo dourado */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 25px;
-            text-transform: uppercase;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            /* Efeito suave */
-            box-shadow: 0 5px 15px rgba(242, 182, 0, 0.5);
-            /* Sombra leve */
-            text-decoration: none;
-            display: inline-block;
-        }
+      .back-button {
+        background-color: #f2b600;
+        /* Amarelo dourado */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 25px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* Efeito suave */
+        box-shadow: 0 5px 15px rgba(242, 182, 0, 0.5);
+        /* Sombra leve */
+        text-decoration: none;
+        display: inline-block;
+      }
 
-        .back-button:hover {
-            transform: scale(1.05);
-            /* Aumenta ligeiramente o botão */
-            box-shadow: 0 10px 20px rgba(242, 182, 0, 0.7);
-            /* Sombra mais pronunciada */
-        }
+      .back-button:hover {
+        transform: scale(1.05);
+        /* Aumenta ligeiramente o botão */
+        box-shadow: 0 10px 20px rgba(242, 182, 0, 0.7);
+        /* Sombra mais pronunciada */
+      }
 
-        /* Seção de conteúdo */
-        .content-container {
-            margin-top: 80px;
-            /* Espaço para o cabeçalho fixo */
-            padding: 20px;
-            color: white;
-            /* Texto branco para melhor contraste */
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            /* Garante que o conteúdo fique acima do overlay */
-        }
+      /* Seção de conteúdo */
+      .content-container {
+        margin-top: 80px;
+        /* Espaço para o cabeçalho fixo */
+        padding: 20px;
+        color: white;
+        /* Texto branco para melhor contraste */
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        /* Garante que o conteúdo fique acima do overlay */
+      }
 
-        .content-container h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #f2b600;
-            /* Amarelo dourado */
-        }
+      .content-container h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #f2b600;
+        /* Amarelo dourado */
+      }
 
-        /* Formulário de Adicionar Jogo */
-        #addGameForm {
-            background-color: rgba(0, 0, 0, 0.8);
-            /* Fundo escuro semi-transparente */
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-            width: 100%;
-            margin: 0 auto;
-            overflow-y: auto;
-            /* Permite rolar se o conteúdo for maior que o container */
-        }
+      /* Formulário de Adicionar Jogo */
+      #addGameForm {
+        background-color: rgba(0, 0, 0, 0.8);
+        /* Fundo escuro semi-transparente */
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+        overflow-y: auto;
+        /* Permite rolar se o conteúdo for maior que o container */
+      }
 
-        #addGameForm div {
-            margin-bottom: 15px;
-            text-align: left;
-        }
+      #addGameForm div {
+        margin-bottom: 15px;
+        text-align: left;
+      }
 
-        #addGameForm label {
-            font-size: 1rem;
-            color: #f2b600;
-            margin-bottom: 5px;
-            display: block;
-        }
+      #addGameForm label {
+        font-size: 1rem;
+        color: #f2b600;
+        margin-bottom: 5px;
+        display: block;
+      }
 
-        #addGameForm input[type="text"],
-        #addGameForm input[type="number"],
-        #addGameForm input[type="file"],
-        #addGameForm textarea,
-        #addGameForm select {
-            padding: 10px;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.8);
-            /* Fundo semi-transparente */
-            color: black;
-            width: 100%;
-        }
+      #addGameForm input[type="text"],
+      #addGameForm input[type="number"],
+      #addGameForm input[type="file"],
+      #addGameForm textarea,
+      #addGameForm select {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        /* Fundo semi-transparente */
+        color: black;
+        width: 100%;
+      }
 
-        #addGameForm textarea {
-            resize: vertical;
-            min-height: 50px;
-        }
+      #addGameForm textarea {
+        resize: vertical;
+        min-height: 50px;
+      }
 
-        #addGameForm button {
-            background-color: #f2b600;
-            /* Amarelo dourado */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 25px;
-            text-transform: uppercase;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-top: 15px;
-            display: inline-block;
-        }
+      #addGameForm button {
+        background-color: #f2b600;
+        /* Amarelo dourado */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 25px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-top: 15px;
+        display: inline-block;
+      }
 
-        #addGameForm button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(242, 182, 0, 0.7);
-        }
+      #addGameForm button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(242, 182, 0, 0.7);
+      }
 
-        /* Rodapé */
-        footer {
-            background: rgba(30, 30, 30, 0.9);
-            /* Fundo escuro semi-transparente */
-            color: white;
-            text-align: center;
-            padding: 20px 10px;
-            position: relative;
-            z-index: 2;
-            /* Garante que o rodapé fique acima do overlay */
-            margin-top: 40px;
-            /* Espaço entre o conteúdo e o rodapé */
-            font-size: 0.9rem;
-        }
+      /* Rodapé */
+      footer {
+        background: rgba(30, 30, 30, 0.9);
+        /* Fundo escuro semi-transparente */
+        color: white;
+        text-align: center;
+        padding: 20px 10px;
+        position: relative;
+        z-index: 2;
+        /* Garante que o rodapé fique acima do overlay */
+        margin-top: 40px;
+        /* Espaço entre o conteúdo e o rodapé */
+        font-size: 0.9rem;
+      }
 
-        footer p {
-            margin: 5px 0;
-        }
+      footer p {
+        margin: 5px 0;
+      }
 
-        footer a {
-            color: #f2b600;
-            /* Cor destacada para links */
-            text-decoration: none;
-            font-weight: bold;
-        }
+      footer a {
+        color: #f2b600;
+        /* Cor destacada para links */
+        text-decoration: none;
+        font-weight: bold;
+      }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
+      footer a:hover {
+        text-decoration: underline;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Imagem de fundo -->
     <div class="background-container">
-        <img src="background.jpg" alt="Imagem de fundo" class="background-image">
+      <img
+        src="background.jpg"
+        alt="Imagem de fundo"
+        class="background-image"
+      />
     </div>
 
     <!-- Camada Semi-Transparente -->
@@ -244,165 +260,208 @@
 
     <!-- Cabeçalho -->
     <header>
-        <div class="logo">
-            <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames">
-            <h1>Stocker Games</h1>
-        </div>
-        <div class="nav-buttons">
-            <a href="/" class="back-button">Home</a>
-            <a href="/games" class="back-button">Lista de Jogos</a>
-        </div>
+      <div class="logo">
+        <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames" />
+        <h1>Stocker Games</h1>
+      </div>
+      <div class="nav-buttons">
+        <a href="/games" class="back-button">
+          <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+        <a href="/games" class="back-button">
+          <i class="fas fa-list"></i> Lista de Jogos
+        </a>
+      </div>
     </header>
 
     <div class="content-container">
-        <section>
-            <h1>Adicionar Novo Jogo</h1>
-            <form id="addGameForm" th:action="@{/add}" method="POST" enctype="multipart/form-data">
-                <!-- Campo oculto para o token CSRF -->
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <section>
+        <h1>Adicionar Novo Jogo</h1>
+        <form
+          id="addGameForm"
+          th:action="@{/add}"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <!-- Campo oculto para o token CSRF -->
+          <input
+            type="hidden"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}"
+          />
 
-                <!-- Título -->
-                <div>
-                    <label for="title">Título:</label>
-                    <input type="text" id="title" name="title" required>
-                </div>
+          <!-- Título -->
+          <div>
+            <label for="title">Título:</label>
+            <input type="text" id="title" name="title" required />
+          </div>
 
-                <!-- Ano de Lançamento -->
-                <div>
-                    <label for="year">Gênero:</label>
-                    <select id="year" name="year" required>
-                        <option value="">Selecione um Ano</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
-                        <option value="2013">2013</option>
-                        <option value="2012">2012</option>
-                        <option value="2011">2011</option>
-                        <option value="2010">2010</option>
-                    </select>
-                </div>
+          <!-- Ano de Lançamento -->
+          <div>
+            <label for="year">Gênero:</label>
+            <select id="year" name="year" required>
+              <option value="">Selecione um Ano</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+              <option value="2016">2016</option>
+              <option value="2015">2015</option>
+              <option value="2014">2014</option>
+              <option value="2013">2013</option>
+              <option value="2012">2012</option>
+              <option value="2011">2011</option>
+              <option value="2010">2010</option>
+            </select>
+          </div>
 
-                <!-- Gênero -->
-                <div>
-                    <label for="genre">Gênero:</label>
-                    <select id="genre" name="genre" required>
-                        <option value="">Selecione um gênero</option>
-                        <option value="Ação">Ação</option>
-                        <option value="Aventura">Aventura</option>
-                        <option value="RPG">RPG</option>
-                        <option value="Esportes">Esportes</option>
-                        <option value="Estratégia">Estratégia</option>
-                        <option value="Simulação">Simulação</option>
-                    </select>
-                </div>
+          <!-- Gênero -->
+          <div>
+            <label for="genre">Gênero:</label>
+            <select id="genre" name="genre" required>
+              <option value="">Selecione um gênero</option>
+              <option value="Ação">Ação</option>
+              <option value="Aventura">Aventura</option>
+              <option value="RPG">RPG</option>
+              <option value="Esportes">Esportes</option>
+              <option value="Estratégia">Estratégia</option>
+              <option value="Simulação">Simulação</option>
+            </select>
+          </div>
 
-                <!-- Plataformas -->
-                <div>
-                    <label>Plataformas:</label>
-                    <div>
-                        <input type="checkbox" id="pc" name="platforms" value="PC">
-                        <label for="pc">PC</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="ps5" name="platforms" value="PS5">
-                        <label for="ps5">PS5</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="xbox" name="platforms" value="Xbox">
-                        <label for="xbox">Xbox Series X</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="switch" name="platforms" value="Switch">
-                        <label for="switch">Nintendo Switch</label>
-                    </div>
-                </div>
+          <!-- Plataformas -->
+          <div>
+            <label>Plataformas:</label>
+            <div>
+              <input type="checkbox" id="pc" name="platforms" value="PC" />
+              <label for="pc">PC</label>
+            </div>
+            <div>
+              <input type="checkbox" id="ps5" name="platforms" value="PS5" />
+              <label for="ps5">PS5</label>
+            </div>
+            <div>
+              <input type="checkbox" id="xbox" name="platforms" value="Xbox" />
+              <label for="xbox">Xbox Series X</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="switch"
+                name="platforms"
+                value="Switch"
+              />
+              <label for="switch">Nintendo Switch</label>
+            </div>
+          </div>
 
-                <!-- Nota -->
-                <div>
-                    <label for="score">Nota:</label>
-                    <input type="number" id="score" name="score" min="0" max="10" step="0.1" required>
-                </div>
+          <!-- Nota -->
+          <div>
+            <label for="score">Nota:</label>
+            <input
+              type="number"
+              id="score"
+              name="score"
+              min="0"
+              max="10"
+              step="0.1"
+              required
+            />
+          </div>
 
-                <!-- Imagens do Jogo -->
-                <div>
-                    <label for="imageUrls">Imagens do Jogo:</label>
-                    <input type="file" id="imageUrls" name="imageFiles" multiple required>
-                </div>
+          <!-- Imagens do Jogo -->
+          <div>
+            <label for="imageUrls">Imagens do Jogo:</label>
+            <input
+              type="file"
+              id="imageUrls"
+              name="imageFiles"
+              multiple
+              required
+            />
+          </div>
 
-                <!-- Descrição Curta -->
-                <div>
-                    <label for="shortDescription">Descrição Curta:</label>
-                    <textarea id="shortDescription" name="shortDescription" required></textarea>
-                </div>
+          <!-- Descrição Curta -->
+          <div>
+            <label for="shortDescription">Descrição Curta:</label>
+            <textarea
+              id="shortDescription"
+              name="shortDescription"
+              required
+            ></textarea>
+          </div>
 
-                <!-- Descrição Longa -->
-                <div>
-                    <label for="longDescription">Descrição Longa:</label>
-                    <textarea id="longDescription" name="longDescription" required></textarea>
-                </div>
+          <!-- Descrição Longa -->
+          <div>
+            <label for="longDescription">Descrição Longa:</label>
+            <textarea
+              id="longDescription"
+              name="longDescription"
+              required
+            ></textarea>
+          </div>
 
-                <!-- Botão de Envio -->
-                <button type="submit">Cadastrar Jogo</button>
-            </form>
-        </section>
+          <!-- Botão de Envio -->
+          <button type="submit" class="save-button">
+            <i class="fas fa-save"></i> Salvar
+          </button>
+        </form>
+      </section>
     </div>
 
     <script>
-        document.getElementById("addGameForm").onsubmit = async function (event) {
-            event.preventDefault();
-            // Validação do Ano (formato YYYY)
-            const year = document.getElementById("year").value;
-            const yearRegex = /^\d{4}$/;
-            if (!year.match(yearRegex)) {
-                alert("Por favor, insira um ano válido (exemplo: 2017).");
-                return;
-            }
-            // Validação da Nota (entre 0 e 10)
-            const score = document.getElementById("score").value;
-            if (score < 0 || score > 10) {
-                alert("A nota deve ser entre 0 e 10.");
-                return;
-            }
-            // Preparar os dados para envio
-            const formData = new FormData(event.target);
-            const gameJson = JSON.stringify({
-                title: formData.get("title"),
-                score: formData.get("score"),
-                year: formData.get("year"),
-                genre: formData.get("genre"),
-                platforms: formData.get("platforms"),
-                shortDescription: formData.get("shortDescription"),
-                longDescription: formData.get("longDescription"),
-            });
-            formData.append("game", gameJson);
-            const response = await fetch("/add", {
-                method: "POST",
-                body: formData
-            });
-            if (response.ok) {
-                alert("Jogo adicionado com sucesso!");
-                window.location.href = "/games"; // Redireciona para a página de jogos
-            } else {
-                alert("Erro ao adicionar o jogo.");
-            }
-        };
+      document.getElementById("addGameForm").onsubmit = async function (event) {
+        event.preventDefault();
+        // Validação do Ano (formato YYYY)
+        const year = document.getElementById("year").value;
+        const yearRegex = /^\d{4}$/;
+        if (!year.match(yearRegex)) {
+          alert("Por favor, insira um ano válido (exemplo: 2017).");
+          return;
+        }
+        // Validação da Nota (entre 0 e 10)
+        const score = document.getElementById("score").value;
+        if (score < 0 || score > 10) {
+          alert("A nota deve ser entre 0 e 10.");
+          return;
+        }
+        // Preparar os dados para envio
+        const formData = new FormData(event.target);
+        const gameJson = JSON.stringify({
+          title: formData.get("title"),
+          score: formData.get("score"),
+          year: formData.get("year"),
+          genre: formData.get("genre"),
+          platforms: formData.get("platforms"),
+          shortDescription: formData.get("shortDescription"),
+          longDescription: formData.get("longDescription"),
+        });
+        formData.append("game", gameJson);
+        const response = await fetch("/add", {
+          method: "POST",
+          body: formData,
+        });
+        if (response.ok) {
+          alert("Jogo adicionado com sucesso!");
+          window.location.href = "/games"; // Redireciona para a página de jogos
+        } else {
+          alert("Erro ao adicionar o jogo.");
+        }
+      };
     </script>
     <footer>
-        <p>Desenvolvido por Maurício Stocker</p>
-        <p>
-            <a href="https://github.com/mauriciostocker">GitHub</a> |
-            <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/">LinkedIn</a>
-        </p>
+      <p>Desenvolvido por Maurício Stocker</p>
+      <p>
+        <a href="https://github.com/mauriciostocker">GitHub</a> |
+        <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/"
+          >LinkedIn</a
+        >
+      </p>
     </footer>
-</body>
-
+  </body>
 </html>
