@@ -1,7 +1,7 @@
 package com.strockerdevs.dslist.services;
 
-import com.strockerdevs.dslist.dto.ProdutoDTO;
-import com.strockerdevs.dslist.dto.ProdutoMinDTO;
+import com.strockerdevs.dslist.dto.GameDTO;
+import com.strockerdevs.dslist.dto.GameMinDTO;
 import com.strockerdevs.dslist.entities.Produto;
 import com.strockerdevs.dslist.entities.Image;
 import com.strockerdevs.dslist.repositories.ProdutoRepository;
@@ -24,7 +24,7 @@ public class ProdutoService {
     ImageService imageService;
 
     @Transactional
-    public Produto saveGameWithImages(ProdutoDTO gameDto, List<MultipartFile> imageFiles) throws IOException {
+    public Produto saveGameWithImages(GameDTO gameDto, List<MultipartFile> imageFiles) throws IOException {
         // Criação do objeto Game com as informações de gameDto
         Produto game = new Produto();
         game.setTitle(gameDto.getTitle());
@@ -48,27 +48,27 @@ public class ProdutoService {
     }
 
     @Transactional(readOnly = true)
-    public ProdutoDTO findById(Long id) {
+    public GameDTO findById(Long id) {
         Produto result = gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game not found"));
-        return new ProdutoDTO(result);
+        return new GameDTO(result);
     }
 
     @Transactional(readOnly = true)
-    public List<ProdutoMinDTO> findAll() {
+    public List<GameMinDTO> findAll() {
         List<Produto> result = gameRepository.findAll();
-        return result.stream().map(ProdutoMinDTO::new).toList();
+        return result.stream().map(GameMinDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public List<ProdutoMinDTO> findByName(String title) {
+    public List<GameMinDTO> findByName(String title) {
         List<Produto> result = gameRepository.findByTitleContainingIgnoreCase(title);
-        return result.stream().map(ProdutoMinDTO::new).toList();
+        return result.stream().map(GameMinDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public ProdutoDTO findByIdWithImages(Long id) {
+    public GameDTO findByIdWithImages(Long id) {
         Produto result = gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game not found"));
-        ProdutoDTO dto = new ProdutoDTO(result);
+        GameDTO dto = new GameDTO(result);
 
         // Adicionando as URLs das imagens no DTO
         List<String> imageUrls = result.getImages().stream()
@@ -80,9 +80,9 @@ public class ProdutoService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProdutoMinDTO> findByFilters(String genre, String platform, Integer year) {
+    public List<GameMinDTO> findByFilters(String genre, String platform, Integer year) {
         List<Produto> result = gameRepository.findByFilters(genre, platform, year);
-        return result.stream().map(ProdutoMinDTO::new).toList();
+        return result.stream().map(GameMinDTO::new).toList();
     }
 
 }

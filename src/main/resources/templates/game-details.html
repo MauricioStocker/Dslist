@@ -1,386 +1,410 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Referência ao Favicon -->
-    <link rel="icon" type="image/png" href="/images/mariomoreno.png" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <title>Detalhes do Jogo - Stocker Games</title>
-    <style>
-      /* Estilos gerais */
-      body {
-        margin: 0;
-        font-family: "Arial", sans-serif;
-        background-color: #1a1a1a;
-        color: white;
-        overflow-x: hidden;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background: rgba(30, 30, 30, 0.9);
-        position: relative;
-        z-index: 3;
-      }
-      .logo {
-        display: flex;
-        align-items: center;
-      }
-      .logo img {
-        width: 50px;
-        height: 50px;
-        margin-right: 10px;
-      }
-      .logo h1 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #f2b600;
-      }
-      .nav-buttons a {
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-      }
-      .background-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        overflow: hidden;
-      }
-      .background-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: brightness(0.5);
-      }
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 2;
-      }
-      .content-container {
-        position: relative;
-        z-index: 3;
-        padding: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Referência ao Favicon -->
+  <link rel="icon" type="image/png" href="/images/mariomoreno.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Detalhes do Jogo - Stocker Games</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      margin: 0;
+      font-family: "Arial", sans-serif;
+      background-color: #1a1a1a;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: rgba(30, 30, 30, 0.9);
+      position: relative;
+      z-index: 3;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #f2b600;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .background-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.5);
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2;
+    }
+
+    .content-container {
+      position: relative;
+      z-index: 3;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .game-detail-card {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .game-image {
+      width: 400px;
+      height: auto;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .game-image:hover {
+      transform: scale(1.05);
+    }
+
+    .image-thumbnails {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    .image-thumbnail {
+      width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .image-thumbnail:hover {
+      transform: scale(1.1);
+    }
+
+    .game-details .short-description,
+    .game-details .long-description {
+      font-family: "Verdana", sans-serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #ddd;
+      margin-top: 15px;
+    }
+
+    .back-button {
+      background-color: rgba(242, 182, 0, 0.8);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 25px;
+      text-transform: uppercase;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    .back-button:hover {
+      background-color: rgba(242, 182, 0, 1);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
       .game-detail-card {
-        display: flex;
-        gap: 30px;
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: center;
       }
+
       .game-image {
-        width: 400px;
-        height: auto;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: transform 0.2s ease;
-      }
-      .game-image:hover {
-        transform: scale(1.05);
-      }
-      .image-thumbnails {
-        display: flex;
-        gap: 10px;
-        overflow-x: auto;
-        margin-top: 20px;
-      }
-      .image-thumbnail {
-        width: 100px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: transform 0.2s ease;
-      }
-      .image-thumbnail:hover {
-        transform: scale(1.1);
-      }
-      .game-details .short-description,
-      .game-details .long-description {
-        font-family: "Verdana", sans-serif;
-        font-size: 1.1rem;
-        font-style: italic;
-        color: #ddd;
-        margin-top: 15px;
-      }
-      .back-button {
-        background-color: rgba(242, 182, 0, 0.8);
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 25px;
-        text-transform: uppercase;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        margin-top: 20px;
-        display: inline-block;
-      }
-      .back-button:hover {
-        background-color: rgba(242, 182, 0, 1);
-        transform: scale(1.05);
-      }
-      @media (max-width: 768px) {
-        .game-detail-card {
-          flex-direction: column;
-          align-items: center;
-        }
-        .game-image {
-          width: 100%;
-          height: auto;
-        }
-      }
-      footer {
-        background: rgba(30, 30, 30, 0.9);
-        color: white;
-        text-align: center;
-        padding: 20px 10px;
-        position: relative;
-        z-index: 2;
-        margin-top: 40px;
-        font-size: 0.9rem;
-      }
-      footer p {
-        margin: 5px 0;
-      }
-      footer a {
-        color: #f2b600;
-        text-decoration: none;
-        font-weight: bold;
-      }
-      footer a:hover {
-        text-decoration: underline;
-      }
-      /* Modal */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
         width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 1000;
-      }
-      .modal-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 90%;
-        max-height: 90%;
-      }
-      .close {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        color: white;
-        font-size: 40px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      .prev,
-      .next {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        color: white;
-        font-size: 40px;
-        font-weight: bold;
-        cursor: pointer;
-        user-select: none;
-      }
-      .prev {
-        left: 20px;
-      }
-      .next {
-        right: 20px;
-      }
-      /* Ajuste para a imagem no modal */
-      #expanded-image {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
         height: auto;
-        object-fit: contain;
-        margin: auto;
-        display: block;
       }
-    </style>
-  </head>
-  <body>
-    <!-- Vídeo de Fundo -->
-    <div class="background-container">
-      <img
-        src="background.jpg"
-        alt="Imagem de fundo"
-        class="background-image"
-      />
+    }
+
+    footer {
+      background: rgba(30, 30, 30, 0.9);
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      position: relative;
+      z-index: 2;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+
+    footer a {
+      color: #f2b600;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .prev,
+    .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .prev {
+      left: 20px;
+    }
+
+    .next {
+      right: 20px;
+    }
+
+    /* Ajuste para a imagem no modal */
+    #expanded-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      margin: auto;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- imagem de Fundo -->
+  <div class="background-container">
+    <img src="background.jpg" alt="Imagem de fundo" class="background-image" />
+  </div>
+  <!-- Camada Semi-Transparente -->
+  <div class="overlay"></div>
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">
+      <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames" />
+      <h1>Stocker Games</h1>
     </div>
-    <!-- Camada Semi-Transparente -->
-    <div class="overlay"></div>
-    <!-- Cabeçalho -->
-    <header>
-      <div class="logo">
-        <img th:src="@{/images/mariomoreno.png}" alt="Logo StockerGames" />
-        <h1>Stocker Games</h1>
-      </div>
-      <div class="nav-buttons">
-        <a href="/" class="back-button"> <i class="fas fa-home"></i> Home </a>
-      </div>
-    </header>
-    <!-- Conteúdo -->
-    <div class="content-container">
-      <section>
-        <h1>Detalhes do Jogo</h1>
-        <div class="game-detail-card">
-          <!-- Imagem central do jogo -->
-          <img
-            id="mainGameImage"
-            th:src="${#lists.isEmpty(game.imgUrls) ? '' : game.imgUrls[0]}"
-            alt="Imagem do Jogo"
-            class="game-image"
-            onclick="openModal(this)"
-          />
-          <!-- Detalhes do jogo -->
-          <div class="game-details">
-            <h2 th:text="${game.title}"></h2>
-            <p><strong>Ano:</strong> <span th:text="${game.year}"></span></p>
-            <p>
-              <strong>Gênero:</strong> <span th:text="${game.genre}"></span>
-            </p>
-            <p>
-              <strong>Plataformas:</strong>
-              <span th:text="${game.platforms}"></span>
-            </p>
-            <p><strong>Nota:</strong> <span th:text="${game.score}"></span></p>
-            <!-- Descrição curta -->
-            <div class="short-description">
-              <strong>Descrição curta:</strong>
-              <p th:text="${game.shortDescription}"></p>
-            </div>
-            <!-- Descrição longa -->
-            <div class="long-description">
-              <strong>Descrição longa:</strong>
-              <p th:text="${game.longDescription}"></p>
-            </div>
-            <!-- Lista de imagens -->
-            <div class="image-thumbnails">
-              <div th:each="image : ${game.imgUrls}">
-                <img
-                  th:src="@{${image}}"
-                  alt="Imagem do jogo"
-                  class="image-thumbnail"
-                  onclick="changeMainImage(this)"
-                />
-              </div>
-            </div>
-            <a href="/games" class="back-button">
-              <i class="fas fa-arrow-left"></i> Voltar
-            </a>
+    <div class="nav-buttons">
+      <a href="/" class="back-button"> <i class="fas fa-home"></i> Home </a>
+    </div>
+  </header>
+  <!-- Conteúdo -->
+  <div class="content-container">
+    <section>
+      <h1>Detalhes do Jogo</h1>
+      <div class="game-detail-card">
+        <!-- Imagem central do jogo -->
+        <img id="mainGameImage" th:src="${#lists.isEmpty(game.imgUrls) ? '' : game.imgUrls[0]}" alt="Imagem do Jogo"
+          class="game-image" onclick="openModal(this)" />
+        <!-- Detalhes do jogo -->
+        <div class="game-details">
+          <h2 th:text="${game.title}"></h2>
+          <p><strong>Ano:</strong> <span th:text="${game.year}"></span></p>
+          <p>
+            <strong>Gênero:</strong> <span th:text="${game.genre}"></span>
+          </p>
+          <p>
+            <strong>Plataformas:</strong>
+            <span th:text="${game.platforms}"></span>
+          </p>
+          <p><strong>Nota:</strong> <span th:text="${game.score}"></span></p>
+          <!-- Descrição curta -->
+          <div class="short-description">
+            <strong>Descrição curta:</strong>
+            <p th:text="${game.shortDescription}"></p>
           </div>
+          <!-- Descrição longa -->
+          <div class="long-description">
+            <strong>Descrição longa:</strong>
+            <p th:text="${game.longDescription}"></p>
+          </div>
+          <!-- Lista de imagens -->
+          <div class="image-thumbnails">
+            <div th:each="image : ${game.imgUrls}">
+              <img th:src="@{${image}}" alt="Imagem do jogo" class="image-thumbnail" onclick="changeMainImage(this)" />
+            </div>
+          </div>
+          <a href="/games" class="back-button">
+            <i class="fas fa-arrow-left"></i> Voltar
+          </a>
         </div>
-      </section>
-    </div>
-    <!-- Modal -->
-    <div id="image-modal" class="modal">
-      <span class="close">
-        <i class="fas fa-times"></i>
-      </span>
-      <img class="modal-content" id="expanded-image" />
-      <a class="prev">
-        <i class="fas fa-chevron-left"></i>
+      </div>
+    </section>
+  </div>
+  <!-- Modal -->
+  <div id="image-modal" class="modal">
+    <span class="close">
+      <i class="fas fa-times"></i>
+    </span>
+    <img class="modal-content" id="expanded-image" />
+    <a class="prev">
+      <i class="fas fa-chevron-left"></i>
+    </a>
+    <a class="next">
+      <i class="fas fa-chevron-right"></i>
+    </a>
+  </div>
+  <footer>
+    <p>Desenvolvido por Maurício Stocker</p>
+    <p>
+      <a href="https://github.com/mauriciostocker" title="GitHub">
+        <i class="fab fa-github"></i>
       </a>
-      <a class="next">
-        <i class="fas fa-chevron-right"></i>
+      |
+      <a href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/" title="LinkedIn">
+        <i class="fab fa-linkedin"></i>
       </a>
-    </div>
-    <footer>
-      <p>Desenvolvido por Maurício Stocker</p>
-      <p>
-        <a href="https://github.com/mauriciostocker" title="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        |
-        <a
-          href="https://www.linkedin.com/in/mauricio-stocker-4bb681235/"
-          title="LinkedIn"
-        >
-          <i class="fab fa-linkedin"></i>
-        </a>
-      </p>
-    </footer>
-    <script>
-      // Função para mudar a imagem central ao clicar na miniatura
-      function changeMainImage(thumbnail) {
-        const mainImage = document.getElementById("mainGameImage");
-        mainImage.src = thumbnail.src;
+    </p>
+  </footer>
+  <script>
+    // Função para mudar a imagem central ao clicar na miniatura
+    function changeMainImage(thumbnail) {
+      const mainImage = document.getElementById("mainGameImage");
+      mainImage.src = thumbnail.src;
+    }
+
+    // Função para abrir o modal
+    let currentIndex = 0;
+    function openModal(image) {
+      const modal = document.getElementById("image-modal");
+      const modalImage = document.getElementById("expanded-image");
+      const images = Array.from(document.querySelectorAll(".image-thumbnail"));
+      currentIndex = images.findIndex((img) => img.src === image.src);
+
+      // Usar a URL da imagem original
+      modalImage.src = image.src;
+
+      modal.style.display = "block";
+
+      // Fechar o modal ao clicar fora
+      modal.onclick = (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // Adicionar ouvinte de evento para teclas do teclado
+      window.addEventListener("keydown", handleKeyPress);
+    }
+
+    // Navegação entre imagens
+    document.querySelector(".prev").onclick = () => navigateImages(-1);
+    document.querySelector(".next").onclick = () => navigateImages(1);
+
+    // Função genérica para navegar entre imagens
+    function navigateImages(direction) {
+      const images = Array.from(document.querySelectorAll(".image-thumbnail"));
+      currentIndex = (currentIndex + direction + images.length) % images.length;
+      document.getElementById("expanded-image").src = images[currentIndex].src;
+    }
+
+    // Fechar o modal ao clicar no botão de fechar
+    document.querySelector(".close").onclick = () => closeModal();
+
+    // Função para fechar o modal
+    function closeModal() {
+      const modal = document.getElementById("image-modal");
+      modal.style.display = "none";
+
+      // Remover ouvinte de evento para teclas do teclado
+      window.removeEventListener("keydown", handleKeyPress);
+    }
+
+    // Função para lidar com pressionamentos de teclas
+    function handleKeyPress(event) {
+      if (event.key === "ArrowLeft") {
+        navigateImages(-1); // Navegar para a imagem anterior
+      } else if (event.key === "ArrowRight") {
+        navigateImages(1); // Navegar para a próxima imagem
+      } else if (event.key === "Escape") {
+        closeModal(); // Fechar o modal
       }
+    }
+  </script>
+</body>
 
-      // Função para abrir o modal
-      let currentIndex = 0;
-      function openModal(image) {
-        const modal = document.getElementById("image-modal");
-        const modalImage = document.getElementById("expanded-image");
-        const images = Array.from(
-          document.querySelectorAll(".image-thumbnail")
-        );
-        currentIndex = images.findIndex((img) => img.src === image.src);
-
-        // Usar a URL da imagem original
-        modalImage.src = image.src;
-
-        modal.style.display = "block";
-
-        // Fechar o modal ao clicar fora
-        modal.onclick = (event) => {
-          if (event.target === modal) {
-            modal.style.display = "none";
-          }
-        };
-      }
-
-      // Navegação entre imagens
-      document.querySelector(".prev").onclick = () => {
-        const images = Array.from(
-          document.querySelectorAll(".image-thumbnail")
-        );
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        document.getElementById("expanded-image").src =
-          images[currentIndex].src;
-      };
-
-      document.querySelector(".next").onclick = () => {
-        const images = Array.from(
-          document.querySelectorAll(".image-thumbnail")
-        );
-        currentIndex = (currentIndex + 1) % images.length;
-        document.getElementById("expanded-image").src =
-          images[currentIndex].src;
-      };
-
-      // Fechar o modal ao clicar no botão de fechar
-      document.querySelector(".close").onclick = () => {
-        document.getElementById("image-modal").style.display = "none";
-      };
-    </script>
-  </body>
 </html>

@@ -344,6 +344,7 @@
         <div>
           <label for="imageUrls">Imagens do Jogo:</label>
           <input type="file" id="imageUrls" name="imageFiles" multiple required />
+          <div id="image-preview"></div>
         </div>
 
         <!-- Descrição Curta -->
@@ -405,6 +406,75 @@
         alert("Erro ao adicionar o jogo.");
       }
     };
+    document.getElementById('imageUrls').addEventListener('change', function (event) {
+      const files = Array.from(event.target.files); // Converte FileList para array
+      const previewDiv = document.getElementById('image-preview');
+      previewDiv.innerHTML = ''; // Limpa a pré-visualização anterior
+
+      // Função para atualizar a lista de arquivos no input file
+      const updateFileInput = (newFiles) => {
+        const dataTransfer = new DataTransfer(); // Cria um novo DataTransfer para manipular arquivos
+        newFiles.forEach(file => dataTransfer.items.add(file)); // Adiciona os arquivos restantes
+        event.target.files = dataTransfer.files; // Atualiza o input file com os novos arquivos
+      };
+
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.width = '100px';
+          img.style.height = '100px';
+          img.style.margin = '5px';
+          img.style.cursor = 'pointer'; // Altera o cursor para indicar que é clicável
+
+          // Adiciona evento de clique para remover a imagem
+          img.addEventListener('click', () => {
+            const filteredFiles = files.filter((_, i) => i !== index); // Remove o arquivo correspondente
+            updateFileInput(filteredFiles); // Atualiza o input file
+            renderPreviews(filteredFiles); // Re-renderiza as pré-visualizações
+          });
+
+          previewDiv.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // Função para re-renderizar as pré-visualizações
+    function renderPreviews(files) {
+      const previewDiv = document.getElementById('image-preview');
+      previewDiv.innerHTML = ''; // Limpa a pré-visualização anterior
+
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.width = '100px';
+          img.style.height = '100px';
+          img.style.margin = '5px';
+          img.style.cursor = 'pointer';
+
+          // Adiciona evento de clique para remover a imagem
+          img.addEventListener('click', () => {
+            const filteredFiles = Array.from(files).filter((_, i) => i !== index); // Remove o arquivo correspondente
+            updateFileInput(filteredFiles); // Atualiza o input file
+            renderPreviews(filteredFiles); // Re-renderiza as pré-visualizações
+          });
+
+          previewDiv.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Função para atualizar o input file
+    function updateFileInput(newFiles) {
+      const dataTransfer = new DataTransfer();
+      newFiles.forEach(file => dataTransfer.items.add(file));
+      document.getElementById('imageUrls').files = dataTransfer.files;
+    }
   </script>
   <footer>
     <p>Desenvolvido por Maurício Stocker</p>

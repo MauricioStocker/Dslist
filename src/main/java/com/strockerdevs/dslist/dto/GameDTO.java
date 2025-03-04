@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.strockerdevs.dslist.entities.Produto;
 import com.strockerdevs.dslist.entities.Image;
 
-public class ProdutoDTO {
+public class GameDTO {
 
     private Long id;
     private String title;
@@ -22,10 +22,10 @@ public class ProdutoDTO {
     private String longDescription;
     private MultipartFile imageFile;
 
-    public ProdutoDTO() {
+    public GameDTO() {
     }
 
-    public ProdutoDTO(Produto game) {
+    public GameDTO(Produto game) {
         BeanUtils.copyProperties(game, this);
         this.imgUrls = game.getImages().stream()
                             .map(Image::getUrl) // Transforme as imagens em URLs
@@ -128,7 +128,7 @@ public class ProdutoDTO {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ProdutoDTO other = (ProdutoDTO) obj;
+        GameDTO other = (GameDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

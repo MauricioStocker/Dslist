@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.core.Authentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.strockerdevs.dslist.dto.ProdutoDTO;
-import com.strockerdevs.dslist.dto.ProdutoMinDTO;
+import com.strockerdevs.dslist.dto.GameDTO;
+import com.strockerdevs.dslist.dto.GameMinDTO;
 import com.strockerdevs.dslist.entities.Produto;
 import com.strockerdevs.dslist.entities.Image;
 import com.strockerdevs.dslist.services.ProdutoService;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-public class ProdutoController {
+public class GameController {
 
     @Autowired
     private ProdutoService gameService;
@@ -31,7 +31,7 @@ public class ProdutoController {
 
     @GetMapping("/games")
     public String showGamePage(Model model) {
-        List<ProdutoMinDTO> games = gameService.findAll();
+        List<GameMinDTO> games = gameService.findAll();
         model.addAttribute("games", games);
 
         // Verifica se o usuário é ADMIN
@@ -46,7 +46,7 @@ public class ProdutoController {
     // Método para exibir os detalhes de um jogo
     @GetMapping("/games/{id}")
     public String getGameDetails(@PathVariable("id") Long id, Model model) {
-        ProdutoDTO game = gameService.findById(id);
+        GameDTO game = gameService.findById(id);
         model.addAttribute("game", game);
         return "game-details";
     }
@@ -55,7 +55,7 @@ public class ProdutoController {
     @GetMapping("/games/search")
     public String searchGameById(@RequestParam Long gameId, Model model) {
         // Atualizado para usar findByIdWithImages, que inclui as imagens
-        ProdutoDTO game = gameService.findByIdWithImages(gameId); // Busca o jogo com imagens
+        GameDTO game = gameService.findByIdWithImages(gameId); // Busca o jogo com imagens
         model.addAttribute("game", game); // Adiciona o jogo ao modelo
         return "game-details"; // Retorna a view de detalhes do jogo
     }
@@ -64,7 +64,7 @@ public class ProdutoController {
     @GetMapping("/games/searchByName")
     public String searchGameByName(@RequestParam String title, Model model) {
         // Busca os jogos pelo nome
-        List<ProdutoMinDTO> games = gameService.findByName(title);
+        List<GameMinDTO> games = gameService.findByName(title);
         model.addAttribute("games", games); // Adiciona os jogos ao modelo
         if (games.isEmpty()) { // Verifica se não encontrou jogos
             model.addAttribute("message", "Nenhum jogo encontrado com o título: " + title
@@ -92,7 +92,7 @@ public class ProdutoController {
             @RequestParam("imageFiles") List<MultipartFile> imageFiles) throws IOException {
         // Converte o JSON recebido para um objeto GameDTO
         ObjectMapper objectMapper = new ObjectMapper();
-        ProdutoDTO gameDto = objectMapper.readValue(gameJson, ProdutoDTO.class);
+        GameDTO gameDto = objectMapper.readValue(gameJson, GameDTO.class);
 
         // Chama o GameService para salvar o jogo com as imagens
         Produto savedGame = gameService.saveGameWithImages(gameDto, imageFiles);
@@ -118,7 +118,7 @@ public class ProdutoController {
             Model model) {
 
         // Chama o serviço para buscar jogos com base nos filtros
-        List<ProdutoMinDTO> games = gameService.findByFilters(genre, platform, year);
+        List<GameMinDTO> games = gameService.findByFilters(genre, platform, year);
 
         // Adiciona os jogos filtrados ao modelo
         model.addAttribute("games", games);

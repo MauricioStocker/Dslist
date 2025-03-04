@@ -4,7 +4,7 @@ import com.strockerdevs.dslist.entities.Produto;
 import com.strockerdevs.dslist.entities.Image;
 import com.strockerdevs.dslist.projections.GameMinProjection;
 
-public class ProdutoMinDTO {
+public class GameMinDTO {
 
     private Long id;
     private String title;
@@ -12,10 +12,10 @@ public class ProdutoMinDTO {
     private String imgUrl;
     private String shortDescription;
 
-    public ProdutoMinDTO() {
+    public GameMinDTO() {
     }
 
-    public ProdutoMinDTO(Produto entity) {
+    public GameMinDTO(Produto entity) {
         id = entity.getId();
         title = entity.getTitle();
         year = entity.getYear();
@@ -27,7 +27,7 @@ public class ProdutoMinDTO {
         shortDescription = entity.getShortDescription();
     }
 
-    public ProdutoMinDTO(GameMinProjection entityProjection) {
+    public GameMinDTO(GameMinProjection entityProjection) {
         id = entityProjection.getId();
         title = entityProjection.getTitle();
         year = entityProjection.getGameYear();
