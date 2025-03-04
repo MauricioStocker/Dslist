@@ -8,9 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.strockerdevs.dslist.entities.Pessoa;
 import com.strockerdevs.dslist.repositories.PessoaRepository;
 import com.strockerdevs.dslist.services.PasswordResetService;
+import com.strockerdevs.dslist.services.PasswordResetService.ActiveTokenExistsException;
+import com.strockerdevs.dslist.services.PasswordResetService.UserNotFoundException;
 
 @Controller
 public class AuthController {
@@ -63,16 +67,24 @@ public class AuthController {
 
     // Processar a solicitação de redefinição de senha
     @PostMapping("/forgot-password")
-    public String processForgotPassword(@RequestParam String email, Model model) {
+    public String processForgotPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
         try {
-            // Gera o token e envia o email
             String token = passwordResetService.createPasswordResetTokenForUser(email);
-
-            // Redireciona para a página de redefinição de senha com o token na URL
+            redirectAttributes.addFlashAttribute("message", "Email enviado com instruções para redefinir a senha.");
             return "redirect:/reset-password?token=" + token;
+        } catch (UserNotFoundException e) {
+            // Caso o email não esteja cadastrado
+            redirectAttributes.addFlashAttribute("error", "O email fornecido não está cadastrado.");
+            return "redirect:/forgot-password";
+        } catch (ActiveTokenExistsException e) {
+            // Caso já exista um token ativo para o usuário
+            redirectAttributes.addFlashAttribute("error", "Você já possui um token ativo. Verifique seu e-mail.");
+            return "redirect:/forgot-password";
         } catch (Exception e) {
-            model.addAttribute("error", "Erro ao enviar o email. Tente novamente.");
-            return "forgot-password"; // Retorna à página com mensagem de erro
+            // Caso ocorra qualquer outro erro
+            redirectAttributes.addFlashAttribute("error",
+                    "Erro ao processar sua solicitação. Tente novamente mais tarde.");
+            return "redirect:/forgot-password";
         }
     }
 

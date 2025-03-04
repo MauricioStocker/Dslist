@@ -1,6 +1,7 @@
 package com.strockerdevs.dslist.services;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,9 @@ import com.strockerdevs.dslist.repositories.PessoaRepository;
 
 @Service
 public class PasswordResetService {
+
+    @Value("${app.token-expiration-hours}")
+    private int tokenExpirationHours;
 
     @Autowired
     private PessoaRepository pessoaRepository;
@@ -33,17 +37,25 @@ public class PasswordResetService {
     private String appBaseUrl;
 
     public String createPasswordResetTokenForUser(String email) {
+        // Busca o usuário pelo e-mail
         Pessoa user = pessoaRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new UserNotFoundException("O email fornecido não está cadastrado."));
 
-        // Gera um token único
+        // Verifica se já existe um token ativo para o usuário
+        Optional<PasswordResetToken> existingTokenOpt = passwordResetTokenRepository.findActiveTokenByUser(user);
+
+        if (existingTokenOpt.isPresent()) {
+            throw new ActiveTokenExistsException("Você já possui um token ativo. Verifique seu e-mail.");
+        }
+
+        // Gera um novo token
         String token = UUID.randomUUID().toString();
 
         // Cria o token de redefinição de senha
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setToken(token);
         passwordResetToken.setUser(user);
-        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(24)); // Expira em 24 horas
+        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(tokenExpirationHours));
         passwordResetTokenRepository.save(passwordResetToken);
 
         // Envia o email com o token
@@ -78,5 +90,17 @@ public class PasswordResetService {
         passwordResetTokenRepository.delete(passwordResetToken);
 
         return true;
+    }
+
+    public class UserNotFoundException extends RuntimeException {
+        public UserNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public class ActiveTokenExistsException extends RuntimeException {
+        public ActiveTokenExistsException(String message) {
+            super(message);
+        }
     }
 }
