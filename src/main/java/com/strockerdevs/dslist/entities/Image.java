@@ -15,12 +15,12 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
-    private Game game;
+    private Produto game;
 
     public Image() {
     }
 
-    public Image(String url, boolean isMain, Game game) {
+    public Image(String url, boolean isMain, Produto game) {
         this.url = url;
         this.isMain = isMain;
         this.game = game;
@@ -50,11 +50,11 @@ public class Image {
         this.isMain = isMain;
     }
 
-    public Game getGame() {
+    public Produto getGame() {
         return game;
     }
 
-    public void setGame(Game game) {
+    public void setGame(Produto game) {
         this.game = game;
     }
 

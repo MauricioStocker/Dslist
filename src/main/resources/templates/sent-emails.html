@@ -55,21 +55,20 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <th>Data de Envio</th>
+                <th>Assunto</th>
                 <th>Remetente</th>
                 <th>Destinatário</th>
-                <th>Assunto</th>
-                <th>Data de Envio</th>
                 <th>Mensagem</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="email : ${sentEmails}">
-                <td th:text="${email.id}"></td>
+               
+                <td th:text="${#temporals.format(email.sentAt, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${email.subject}"></td>
                 <td th:text="${email.fromEmail}"></td> <!-- Alterado aqui -->
                 <td th:text="${email.toEmail}"></td>
-                <td th:text="${email.subject}"></td>
-                <td th:text="${#temporals.format(email.sentAt, 'dd/MM/yyyy HH:mm')}"></td>
                 <td th:text="${email.text}"></td>
             </tr>
         </tbody>

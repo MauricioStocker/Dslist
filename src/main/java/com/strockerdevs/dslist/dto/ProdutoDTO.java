@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.strockerdevs.dslist.entities.Game;
+import com.strockerdevs.dslist.entities.Produto;
 import com.strockerdevs.dslist.entities.Image;
 
-public class GameDTO {
+public class ProdutoDTO {
 
     private Long id;
     private String title;
@@ -22,10 +22,10 @@ public class GameDTO {
     private String longDescription;
     private MultipartFile imageFile;
 
-    public GameDTO() {
+    public ProdutoDTO() {
     }
 
-    public GameDTO(Game game) {
+    public ProdutoDTO(Produto game) {
         BeanUtils.copyProperties(game, this);
         this.imgUrls = game.getImages().stream()
                             .map(Image::getUrl) // Transforme as imagens em URLs
@@ -128,7 +128,7 @@ public class GameDTO {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        GameDTO other = (GameDTO) obj;
+        ProdutoDTO other = (ProdutoDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

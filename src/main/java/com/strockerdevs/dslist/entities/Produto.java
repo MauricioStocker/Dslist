@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_game")
-public class Game {
+public class Produto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +29,10 @@ public class Game {
 	@OneToMany(mappedBy = "game", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Image> images;
 
-	public Game() {
+	public Produto() {
 	}
 
-	public Game(Long id, String title, Integer year, String genre, String platforms, Double score,
+	public Produto(Long id, String title, Integer year, String genre, String platforms, Double score,
 			String shortDescription, String longDescription) {
 		this.id = id;
 		this.title = title;
@@ -122,7 +122,7 @@ public class Game {
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		Game game = (Game) obj;
+		Produto game = (Produto) obj;
 		return Objects.equals(id, game.id);
 	}
 

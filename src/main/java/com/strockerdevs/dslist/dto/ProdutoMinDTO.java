@@ -1,10 +1,10 @@
 package com.strockerdevs.dslist.dto;
 
-import com.strockerdevs.dslist.entities.Game;
+import com.strockerdevs.dslist.entities.Produto;
 import com.strockerdevs.dslist.entities.Image;
 import com.strockerdevs.dslist.projections.GameMinProjection;
 
-public class GameMinDTO {
+public class ProdutoMinDTO {
 
     private Long id;
     private String title;
@@ -12,10 +12,10 @@ public class GameMinDTO {
     private String imgUrl;
     private String shortDescription;
 
-    public GameMinDTO() {
+    public ProdutoMinDTO() {
     }
 
-    public GameMinDTO(Game entity) {
+    public ProdutoMinDTO(Produto entity) {
         id = entity.getId();
         title = entity.getTitle();
         year = entity.getYear();
@@ -27,7 +27,7 @@ public class GameMinDTO {
         shortDescription = entity.getShortDescription();
     }
 
-    public GameMinDTO(GameMinProjection entityProjection) {
+    public ProdutoMinDTO(GameMinProjection entityProjection) {
         id = entityProjection.getId();
         title = entityProjection.getTitle();
         year = entityProjection.getGameYear();

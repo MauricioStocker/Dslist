@@ -1,8 +1,8 @@
 package com.strockerdevs.dslist.services;
 
-import com.strockerdevs.dslist.entities.Game;
+import com.strockerdevs.dslist.entities.Produto;
 import com.strockerdevs.dslist.entities.Image;
-import com.strockerdevs.dslist.repositories.GameRepository;
+import com.strockerdevs.dslist.repositories.ProdutoRepository;
 import com.strockerdevs.dslist.repositories.ImageRepository;
 
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class ImageService {
 
     @Autowired
-    private GameRepository gameRepository;
+    private ProdutoRepository gameRepository;
     @Autowired
     private ImageRepository imageRepository;
     @Autowired
@@ -27,7 +27,7 @@ public class ImageService {
 
     private static final Logger logger = LoggerFactory.getLogger(ImageService.class);
 
-    public ImageService(GameRepository gameRepository, ImageRepository imageRepository,
+    public ImageService(ProdutoRepository gameRepository, ImageRepository imageRepository,
             CloudinaryService cloudinaryService) {
         this.gameRepository = gameRepository;
         this.imageRepository = imageRepository;
@@ -51,7 +51,7 @@ public class ImageService {
         }
 
         // 3. Verificar se o jogo existe
-        Game game = gameRepository.findById(gameId)
+        Produto game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new RuntimeException("Jogo não encontrado"));
 
         // 4. Enviar a imagem para o Cloudinary e obter a URL
